@@ -25,21 +25,25 @@ function EditRecipePage({
       setRecipe({ ...props.recipe });
     }
   }, [props.recipe]);
+
   function handleChange(event) {
-    const { name, value } = event.target;
+    const { name, value, files } = event.target;
+
+    console.log(event.target);
+    // debugger;
     setRecipe((prevRecipe) => ({
       ...prevRecipe,
-      [name]: name === "authorId" ? parseInt(value, 10) : value,
+      [name]: name === "photoUrl" ? URL.createObjectURL(files[0]) : value,
     }));
   }
 
   function formIsValid() {
-    const { name, description, _yield } = recipe;
+    const { name, description } = recipe;
     const errors = {};
 
     if (!name) errors.title = "name is required.";
     if (!description) errors.author = "Desc is required";
-    if (!_yield) errors.category = "yield is required";
+    if (!recipe.yield) errors.category = "yield is required";
 
     setErrors(errors);
     // Form is valid if the errors object still has no properties

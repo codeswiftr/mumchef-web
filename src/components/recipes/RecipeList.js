@@ -6,7 +6,7 @@ const RecipeList = ({ recipes, onDeleteClick }) => (
   <div className='card-columns'>
     {recipes.map((recipe) => {
       return (
-        <div key={recipe.id} className='card'>
+        <div key={recipe.id} className='card p-3'>
           <img className='card-img-top' src={recipe.photoUrl} alt='Recipe' />
           <div className='card-body'>
             <Link to={"/recipe/" + recipe.id} className='card-title'>
