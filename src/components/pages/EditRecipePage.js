@@ -84,6 +84,7 @@ function mapStateToProps(state, ownProps) {
   return {
     recipe,
     recipes: state.recipes,
+    aggregate: state.aggregate,
   };
 }
 
