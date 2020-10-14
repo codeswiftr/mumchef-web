@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { loadRecipes } from "../../redux/actions/recipeActions";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import RecipeList from "../recipes/RecipeList";
@@ -46,8 +45,6 @@ function mapStateToProps(state) {
   };
 }
 
-const mapDispatchToProps = {
-  loadRecipes,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipesPage);

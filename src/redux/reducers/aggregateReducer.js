@@ -3,7 +3,7 @@ import initialState from "./initialState";
 
 export default function aggregateReducer(
   state = initialState.aggregate,
-  action
+  action = {}
 ) {
   switch (action.type) {
     default:

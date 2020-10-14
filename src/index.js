@@ -5,10 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
-import configureStore from "./redux/configureStore";
+import store from "./redux/store";
 import { Provider as ReduxProvider } from "react-redux";
-
-const store = configureStore();
+import "whatwg-fetch";
 
 render(
   <ReduxProvider store={store}>

@@ -1,7 +1,7 @@
 import * as ActionTypes from "./actionTypes";
-export function beginApiCall() {
-  return { type: ActionTypes.BEGIN_API_CALL };
+export function beginApiCall(params) {
+  return { type: ActionTypes.BEGIN_API_CALL, params };
 }
-export function apiCallError() {
-  return { type: ActionTypes.API_CALL_ERROR };
+export function apiCallError(params) {
+  return { type: ActionTypes.API_CALL_ERROR, params };
 }

@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
 import RecipeForm from "../recipes/RecipeForm";
-import { loadRecipes, saveRecipe } from "../../redux/actions/recipeActions";
 
 function EditRecipePage({
   recipes = [],
@@ -88,9 +87,6 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-const mapDispatchToProps = {
-  loadRecipes,
-  saveRecipe,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditRecipePage);
