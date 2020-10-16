@@ -7,14 +7,10 @@ import { Redirect } from "react-router-dom";
 import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
 
-const RecipesPage = ({ recipes, history, loadRecipes, ...props }) => {
-  useEffect(() => {
-    if (recipes.length === 0) {
-      loadRecipes().catch((error) => {
-        alert("Loading recipes failed" + error);
-      });
-    }
-  }, [recipes.length]);
+const RecipesPage = ({ recipes, history, syncRecipes, ...props }) => {
+  // useEffect(() => {
+  //   syncRecipes();
+  // }, []);
 
   function handleDeleteRecipe(recipe) {
     toast.success("Recipe deleted");
@@ -41,10 +37,12 @@ const RecipesPage = ({ recipes, history, loadRecipes, ...props }) => {
 
 function mapStateToProps(state) {
   return {
-    recipes: state.recipes,
+    recipes: state.recipes.list,
   };
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  // syncRecipes,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipesPage);

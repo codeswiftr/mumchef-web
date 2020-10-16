@@ -17,9 +17,7 @@ function EditRecipePage({
 
   useEffect(() => {
     if (recipes.length === 0) {
-      loadRecipes().catch((error) => {
-        alert("Loading recipe failed:" + error);
-      });
+      console.warn("# no recipes available ..");
     } else {
       setRecipe({ ...props.recipe });
     }
@@ -79,10 +77,10 @@ function EditRecipePage({
 
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
-  const recipe = state.recipes.find((recipe) => recipe.id === id) || null;
+  const recipe = state.recipes.list.find((recipe) => recipe.id === id) || null;
   return {
     recipe,
-    recipes: state.recipes,
+    recipes: state.recipes.list,
     aggregate: state.aggregate,
   };
 }

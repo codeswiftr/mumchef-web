@@ -1,25 +1,22 @@
-import * as types from "../actions/actionTypes";
-import initialState from "./initialState";
+import { types } from "../actions/recipes";
 
-export default function recipeReducer(
-  state = initialState.recipes,
-  action = {}
-) {
-  // console.log("recipe reducer:", state, action);
-  if (action === undefined) {
-    return state;
-  }
+const initialState = {
+  list: [],
+  new: "",
+};
+
+export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case types.CREATE_RECIPE_SUCCESS:
-      return [...state, { ...action.recipe }];
-    case types.UPDATE_RECIPE_SUCCESS:
-      return state.map((recipe) =>
-        recipe.id === action.recipe.id ? action.recipe : recipe
-      );
-    case types.LOAD_RECIPES_SUCCESS:
-      return action.recipes;
-    case types.DELETE_RECIPE_OPTIMISTIC:
-      return state.filter((recipe) => recipe.id !== action.recipe.id);
+    case types.RECIPES.SYNC:
+      return {
+        ...state,
+        list: action.recipes,
+      };
+    case types.RECIPES.NEW.CHANGE:
+      return {
+        ...state,
+        new: action.todo,
+      };
     default:
       return state;
   }

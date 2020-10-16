@@ -33,12 +33,13 @@ function* logoutSaga() {
 }
 
 function* loginStatusWatcher() {
+  console.log("# loginStatusWatcher");
   // events on this channel fire when the user logs in or logs out
   const channel = yield call(rsf.auth.channel);
 
   while (true) {
     const { user } = yield take(channel);
-    console.log("# user:", user);
+    // console.log("# user:", user);
     if (user) yield put(loginSuccess(user));
     else yield put(logoutSuccess());
   }
