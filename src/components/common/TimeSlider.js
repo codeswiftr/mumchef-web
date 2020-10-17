@@ -5,16 +5,36 @@ import Slider from "@material-ui/core/Slider";
 
 const defaultMarks = [
   {
+    value: 5,
+    label: "5m",
+  },
+  {
     value: 10,
-    label: "10m",
+    // label: "10m",
+  },
+  {
+    value: 15,
+    label: "15m",
+  },
+  {
+    value: 20,
+    // label: "20m",
   },
   {
     value: 30,
     label: "30m",
   },
   {
+    value: 45,
+    label: "40m",
+  },
+  {
     value: 60,
     label: "1h",
+  },
+  {
+    value: 90,
+    label: "1.5h",
   },
   {
     value: 120,

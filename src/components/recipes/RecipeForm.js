@@ -29,11 +29,13 @@ import initialState from "../../redux/reducers/initialState";
 const PhotoInput = styled(ImageInput)`
   bacground: red;
   background-color: blue;
-  width: 375px;
+  width: 300px;
 `;
 
-const CustomPaper = styled(Paper)`
-  bacground: cyan;
+const StyledPaper = styled(Paper)`
+  min-width: 375px;
+  padding: 16px;
+  max-width: 80%;
 `;
 const StyledButton = styled(Button)`
   background-color: #6772e5;
@@ -45,15 +47,32 @@ const StyledButton = styled(Button)`
   & .MuiButton-label {
     color: #fff;
   }
+  min-width: 300px;
+  width: 100%;
 `;
 
 const StyledForm = styled(FormControl)`
   ${({ theme }) => `
-  min-width: 375px;
-  margin-right: 8px;
+  min-width: 300px;
+  padding: 8px;
+  width: 100%;
 `}
 `;
 
+const StepField = styled(TextField)`
+  width: 100%;
+  margin: 8px 0;
+`;
+
+const IngredientField = styled(TextField)`
+  width: 65%;
+  margin: 8px 0;
+  margin-right: 5%;
+`;
+const TagField = styled(TextField)`
+  width: 30%;
+  margin: 8px 0;
+`;
 const StyledDivider = styled(Divider)`
   margin: 80px 0 0 0;
 `;
@@ -109,114 +128,189 @@ const RecipeForm = ({
 
   console.log("#### RENDER:", recipe);
   return (
-    // <form onSubmit={onSave}>
-    //   <h2>{recipe.id ? "Edit" : "Add"} Recipe</h2>
-    //   {errors.onSave && (
-    //     <div className='alert alert-danger' role='alert'>
-    //       {errors.onSave}
-    //     </div>
-    //   )}
+    <>
+      <StyledPaper>
+        <StyledForm>
+          <Typography variant='h3' component='h4'>
+            {recipe.id ? "Edit" : "Add"} Recipe
+          </Typography>
+          <TextField
+            required
+            label='Recipe Name'
+            variant='outlined'
+            margin='dense'
+            defaultValue={recipe.name}
+          />
 
-    <StyledForm>
-      <TextField
-        required
-        label='Recipe Name'
-        variant='outlined'
-        margin='dense'
-        defaultValue={recipe.name}
-      />
+          <PhotoInput
+            className='img-thumbnail'
+            name='photoUrl'
+            label='Photo'
+            value={recipe.photoUrl}
+            onChange={onChange}
+            error={errors.photoUrl}></PhotoInput>
 
-      <PhotoInput
-        className='img-thumbnail'
-        name='photoUrl'
-        label='Photo'
-        value={recipe.photoUrl}
-        onChange={onChange}
-        error={errors.photoUrl}></PhotoInput>
+          <TimeSlider
+            id='prepTime'
+            label='Preparation Minutes'
+            defaultValue={recipe.prepMinutes}
+          />
+          <TimeSlider
+            id='cookTime'
+            label='Cooking Minutes'
+            defaultValue={recipe.cookMinutes}
+          />
+          <Typography id='discrete-slider-restrict' gutterBottom>
+            Portions yielded
+          </Typography>
+          <Slider
+            defaultValue={recipe.yield}
+            max={20}
+            marks={[
+              {
+                value: 1,
 
-      <TimeSlider
-        id='prepTime'
-        label='Preparation Minutes'
-        defaultValue={recipe.prepMinutes}
-      />
-      <TimeSlider
-        id='cookTime'
-        label='Cooking Minutes'
-        defaultValue={recipe.cookMinutes}
-      />
-      <Typography id='discrete-slider-restrict' gutterBottom>
-        Portions yielded
-      </Typography>
-      <Slider
-        defaultValue={recipe.yield}
-        max={20}
-        marks={[
-          {
-            value: 1,
-          },
-          {
-            value: 2,
+                label: "1",
+              },
+              {
+                value: 2,
 
-            label: "2",
-          },
-          {
-            value: 4,
-            label: "4",
-          },
-          {
-            value: 8,
+                label: "2",
+              },
+              {
+                value: 4,
+                label: "4",
+              },
+              {
+                value: 8,
 
-            label: "8",
-          },
-          {
-            value: 12,
+                label: "8",
+              },
+              {
+                value: 12,
 
-            label: "12",
-          },
-          {
-            value: 16,
-          },
-          {
-            value: 20,
-          },
-        ]}
-        step={null}
-        aria-labelledby='discrete-slider-restrict'
-        valueLabelDisplay='on'
-      />
-      <StyledDivider />
-      <StyledForm>
-        <InputLabel id='demo-mutiple-checkbox-label'>Allergens</InputLabel>
-        {/* <Typography id='demo-mutiple-checkbox-label'>Allergens</Typography> */}
-        <Select
-          name='allergens'
-          labelId='demo-mutiple-checkbox-label'
-          id='demo-mutiple-checkbox'
-          multiple
-          value={allergens}
-          onChange={onChange}
-          input={<Input />}
-          renderValue={(selected) => {
-            selected = selected.allergens || selected;
-            // console.log(selected);
-            return selected.join(", ");
-          }}
-          MenuProps={MenuProps}>
-          {Object.entries(aggregate.allergens).map((item) => {
-            const [name, index] = item;
-            // debugger;
+                label: "12",
+              },
+              {
+                value: 16,
+                label: "16",
+              },
+              {
+                value: 20,
+
+                label: "20",
+              },
+            ]}
+            step={null}
+            aria-labelledby='discrete-slider-restrict'
+            valueLabelDisplay='on'
+          />
+          <StyledDivider />
+          <StyledForm>
+            <InputLabel id='demo-mutiple-checkbox-label'>Allergens</InputLabel>
+            {/* <Typography id='demo-mutiple-checkbox-label'>Allergens</Typography> */}
+            <Select
+              name='allergens'
+              labelId='demo-mutiple-checkbox-label'
+              id='demo-mutiple-checkbox'
+              multiple
+              value={allergens}
+              onChange={onChange}
+              input={<Input />}
+              renderValue={(selected) => {
+                selected = selected.allergens || selected;
+                // console.log(selected);
+                return selected.join(", ");
+              }}
+              MenuProps={MenuProps}>
+              {Object.entries(aggregate.allergens).map((item) => {
+                const [name, index] = item;
+                // debugger;
+                return (
+                  <MenuItem key={name} value={`${name}`}>
+                    <Checkbox checked={allergens.indexOf(name) > -1} />
+                    <ListItemText primary={name} />
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </StyledForm>
+          <StyledDivider />
+          <StyledButton>Next</StyledButton>
+        </StyledForm>
+      </StyledPaper>
+
+      <StyledPaper>
+        <Typography variant='h4' component='h5'>
+          Ingredients
+        </Typography>
+        {recipe.ingredients &&
+          recipe.ingredients.map((item) => {
             return (
-              <MenuItem key={name} value={`${name}`}>
-                <Checkbox checked={allergens.indexOf(name) > -1} />
-                <ListItemText primary={name} />
-              </MenuItem>
+              <>
+                <Divider />
+                <IngredientField
+                  required
+                  label='Ingredient'
+                  variant='filled'
+                  margin='dense'
+                  defaultValue={item.fullDescription}
+                />
+                <TagField
+                  required
+                  label='Tag'
+                  variant='filled'
+                  margin='dense'
+                  defaultValue={item.name}
+                />
+                <Divider />
+              </>
             );
           })}
-        </Select>
-      </StyledForm>
-      <StyledDivider />
-      <StyledButton>Submit</StyledButton>
-    </StyledForm>
+        <Divider />
+        <IngredientField
+          required
+          label='Ingredient'
+          variant='filled'
+          margin='dense'
+        />
+        <TagField required label='Tag' variant='filled' margin='dense' />
+        <Divider />
+        <StyledButton>New Ingredient</StyledButton>
+        <StyledDivider />
+      </StyledPaper>
+
+      <StyledPaper>
+        <Typography variant='h4' component='h5'>
+          Steps
+        </Typography>
+        {recipe.instructions &&
+          recipe.instructions.map((item) => {
+            return (
+              <>
+                <StepField
+                  id='standard-textarea'
+                  label='step'
+                  defaultValue={item.description}
+                  multiline
+                  variant='filled'
+                />
+              </>
+            );
+          })}
+        <StepField
+          id='standard-textarea'
+          label='new step'
+          placeholder='instructions'
+          variant='filled'
+          multiline
+        />
+        <StyledButton>New Step</StyledButton>
+        <StyledDivider />
+
+        <StyledButton>Submit</StyledButton>
+      </StyledPaper>
+    </>
 
     // </form>
   );
