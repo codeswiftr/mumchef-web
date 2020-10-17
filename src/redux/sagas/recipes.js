@@ -17,7 +17,7 @@ function* saveNewRecipe() {
   const user = yield select((state) => state.login.user);
   const newRecipe = yield select((state) => state.recipes.new);
 
-  yield call(rsf.database.create, "recipes_patthy", {
+  yield call(rsf.database.create, "recipes_web", {
     creator: user ? user.uid : null,
     done: false,
     label: newRecipe,
@@ -25,7 +25,7 @@ function* saveNewRecipe() {
 }
 
 function* setRecipeStatus(action) {
-  yield call(rsf.database.patch, `recipes_patthy/${action.recipeId}`, {
+  yield call(rsf.database.patch, `recipes_web/${action.recipeId}`, {
     done: action.done,
   });
 }
@@ -42,7 +42,7 @@ function* syncRecipesSaga() {
   console.log("@ syncRecipesSaga.. ");
 
   // Start the sync saga
-  let task = yield fork(rsf.database.sync, "recipes_patthy", {
+  let task = yield fork(rsf.database.sync, "recipes_web", {
     successActionCreator: syncRecipes,
     transform: recipesTransformer,
   });

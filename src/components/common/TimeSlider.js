@@ -3,12 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 
-const useStyles = makeStyles({
-  root: {
-    width: 300,
-  },
-});
-
 const defaultMarks = [
   {
     value: 10,
@@ -29,7 +23,6 @@ const defaultMarks = [
 ];
 
 export default function TimeSlider({ label, marks, unit = "m" }) {
-  const classes = useStyles();
   marks = marks || defaultMarks;
   function valuetext(value, x, unit = "") {
     return `${value} ${unit}`;
@@ -39,15 +32,16 @@ export default function TimeSlider({ label, marks, unit = "m" }) {
     return marks.findIndex((mark) => mark.value === value) + 1;
   }
   return (
-    <div className={classes.root}>
+    <div>
       <Typography id='discrete-slider-restrict' gutterBottom>
-        Restricted values
+        {label}
       </Typography>
       <Slider
         defaultValue={20}
         valueLabelFormat={valuetext}
         getAriaValueText={valuetext}
         aria-labelledby='discrete-slider-restrict'
+        max={120}
         step={null}
         valueLabelDisplay='on'
         marks={marks}
