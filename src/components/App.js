@@ -14,8 +14,8 @@ function App() {
     <div className='container-fluid'>
       <Header />
       <Switch>
-        <Route exact path='/' component={HomePage} />
-        <Route path='/about' component={AboutPage} />
+        <Route exact path='/' component={RecipesPage} exact />
+        <Route path='/about' component={HomePage} />
         <Route path='/recipes' component={RecipesPage} />
         <Route path='/recipe/:id' component={EditRecipePage} />
       </Switch>
