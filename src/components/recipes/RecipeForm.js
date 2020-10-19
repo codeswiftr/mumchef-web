@@ -2,7 +2,7 @@ import React from "react";
 
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
-import TextInput from "../common/TextInput";
+import MultipleSelect from "../common/MultipleSelect";
 import TextArea from "../common/TextArea";
 import SelectInput from "../common/SelectInput";
 import ImageInput from "../common/ImageInput";
@@ -206,35 +206,20 @@ const RecipeForm = ({
             valueLabelDisplay='on'
           />
           <StyledDivider />
-          <StyledForm>
-            <InputLabel id='demo-mutiple-checkbox-label'>Allergens</InputLabel>
-            {/* <Typography id='demo-mutiple-checkbox-label'>Allergens</Typography> */}
-            <Select
-              name='allergens'
-              labelId='demo-mutiple-checkbox-label'
-              id='demo-mutiple-checkbox'
-              multiple
-              value={allergens}
-              onChange={onChange}
-              input={<Input />}
-              renderValue={(selected) => {
-                selected = selected.allergens || selected;
-                // console.log(selected);
-                return selected.join(", ");
-              }}
-              MenuProps={MenuProps}>
-              {Object.entries(aggregate.allergens).map((item) => {
-                const [name, index] = item;
-                // debugger;
-                return (
-                  <MenuItem key={name} value={`${name}`}>
-                    <Checkbox checked={allergens.indexOf(name) > -1} />
-                    <ListItemText primary={name} />
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </StyledForm>
+          <MultipleSelect
+            options={aggregate.allergens}
+            defaultValue={
+              recipe && recipe.allergens && Object.keys(recipe.allergens)
+            }
+            label='Allergens'></MultipleSelect>
+
+          <StyledDivider />
+          <MultipleSelect
+            options={aggregate.categories}
+            defaultValue={
+              recipe && recipe.categories && Object.keys(recipe.categories)
+            }
+            label='Categories'></MultipleSelect>
           <StyledDivider />
           <StyledButton>Next</StyledButton>
         </StyledForm>
