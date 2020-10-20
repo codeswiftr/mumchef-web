@@ -216,7 +216,7 @@ export function Header(props) {
                 vertical: "top",
                 horizontal: "right",
               }}
-              // open={open}
+              open={false}
               onClose={handleClose}>
               <MenuItem onClick={props.login} disabled={props.loggedIn}>
                 Login

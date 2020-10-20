@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
 import RecipeForm from "../recipes/RecipeForm";
-
+import CircularProgress from "@material-ui/core/CircularProgress";
 function EditRecipePage({
   recipes = [],
   loadRecipes,
@@ -63,7 +62,7 @@ function EditRecipePage({
   }
 
   return recipes === 0 ? (
-    <Spinner />
+    <CircularProgress />
   ) : (
     <RecipeForm
       recipe={recipe}

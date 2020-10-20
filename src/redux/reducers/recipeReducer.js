@@ -4,7 +4,7 @@ const initialState = {
   list: [],
   new: "",
   selected: null,
-  loaded: false,
+  loading: true,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -13,7 +13,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         list: action.recipes,
-        loaded: true,
+        loading: false,
       };
     case types.RECIPES.SELECT:
       return {

@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "material-ui-image";
-import Icon from "@material-ui/core/Icon";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 
@@ -32,8 +32,8 @@ const ImageInput = ({ name, label, onChange, placeholder, value, error }) => {
             name={name}
           />
           <label htmlFor='raised-button-file'>
-            <Button variant='raised' component='span'>
-              <Icon style={{ fontSize: 30 }}>add_circle</Icon>
+            <Button variant='contained' component='span'>
+              <PhotoCamera />
             </Button>
           </label>
         </div>
