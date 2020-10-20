@@ -41,19 +41,23 @@ const defaultMarks = [
   },
 ];
 
-export default function TimeSlider({ label, marks, unit = "m" }) {
+export default function TimeSlider({ label, marks, unit = "m", currentValue }) {
   marks = marks || defaultMarks;
   function valuetext(value, x, unit = "") {
     return `${value} ${unit}`;
   }
+  const [value, setValue] = React.useState(currentValue);
 
+  const handleSliderChange = (event, newValue) => {
+    setValue(newValue);
+  };
   return (
     <div>
       <Typography id='discrete-slider-restrict' gutterBottom>
         {label}
       </Typography>
       <Slider
-        defaultValue={20}
+        value={value}
         valueLabelFormat={valuetext}
         getAriaValueText={valuetext}
         aria-labelledby='discrete-slider-restrict'
@@ -61,6 +65,7 @@ export default function TimeSlider({ label, marks, unit = "m" }) {
         step={null}
         valueLabelDisplay='on'
         marks={marks}
+        onChange={handleSliderChange}
       />
     </div>
   );

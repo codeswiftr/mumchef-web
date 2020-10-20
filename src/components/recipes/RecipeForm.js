@@ -74,13 +74,34 @@ const RecipeForm = ({
   onSave,
   saving = false,
   aggregate = initialState.aggregate,
+  setName,
+  setError,
+  setYield,
   errors = {},
+  ...props
 }) => {
   const newRecipe = {
     allergens: {},
+    yield: 2,
+    cookMinutes: 15,
+    prepMinutes: 15,
   };
   const recipe = selectedRecipe || newRecipe;
-  console.log("# FORM: ", recipe);
+
+  const handleChange = (event) => {
+    const title = event.target.value;
+
+    setName(title);
+    if (title.length === 0) {
+      setError("Please enter title");
+    } else {
+      setError("");
+    }
+  };
+
+  const handleYieldChange = (event, newValue) => {
+    setYield(newValue);
+  };
   return (
     <>
       <StyledPaper>
@@ -93,7 +114,8 @@ const RecipeForm = ({
             label='Recipe Name'
             variant='outlined'
             margin='dense'
-            defaultValue={recipe.name}
+            value={recipe.name}
+            onChange={handleChange}
           />
 
           <PhotoInput
@@ -107,18 +129,18 @@ const RecipeForm = ({
           <TimeSlider
             id='prepTime'
             label='Preparation Minutes'
-            defaultValue={recipe.prepMinutes}
+            currentValue={recipe.prepMinutes}
           />
           <TimeSlider
             id='cookTime'
             label='Cooking Minutes'
-            defaultValue={recipe.cookMinutes}
+            currentValue={recipe.cookMinutes}
           />
           <Typography id='discrete-slider-restrict' gutterBottom>
             Portions yielded
           </Typography>
           <Slider
-            defaultValue={recipe.yield}
+            value={recipe.yield}
             max={20}
             marks={[
               {
@@ -158,6 +180,7 @@ const RecipeForm = ({
             step={null}
             aria-labelledby='discrete-slider-restrict'
             valueLabelDisplay='on'
+            onChange={handleYieldChange}
           />
           <StyledDivider />
           <MultipleSelect
@@ -193,14 +216,14 @@ const RecipeForm = ({
                   label='Ingredient'
                   variant='filled'
                   margin='dense'
-                  defaultValue={item.fullDescription}
+                  value={item.fullDescription}
                 />
                 <TagField
                   required
                   label='Tag'
                   variant='filled'
                   margin='dense'
-                  defaultValue={item.name}
+                  value={item.name}
                 />
                 <Divider />
               </div>
@@ -229,7 +252,7 @@ const RecipeForm = ({
               <StepField
                 key={`step-${index}`}
                 label='step'
-                defaultValue={item.description}
+                value={item.description}
                 multiline
                 variant='filled'
               />

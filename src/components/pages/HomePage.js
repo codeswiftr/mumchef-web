@@ -3,10 +3,7 @@ import { login, logout } from "../../redux/actions/login";
 import { connect } from "react-redux";
 const HomePage = (props) => {
   useEffect(() => {
-    console.log("# dashboard:");
-    return () => {
-      console.log("use effect clean up");
-    };
+    return () => {};
   }, []);
   return (
     <>

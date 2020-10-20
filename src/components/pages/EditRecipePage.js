@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import RecipeForm from "../recipes/RecipeForm";
-import { findRecipe } from "../../redux/actions/recipes";
+import {
+  findRecipe,
+  setName,
+  setCookMinutes,
+  setPrepMinutes,
+  setError,
+  setYield,
+} from "../../redux/actions/recipes";
 import CircularProgress from "@material-ui/core/CircularProgress";
 function EditRecipePage({
   recipes = [],
@@ -9,6 +16,12 @@ function EditRecipePage({
   saveRecipe,
   history,
   findRecipe,
+  setName,
+  setCookMinutes,
+  setPrepMinutes,
+  setError,
+  setYield,
+
   recipe,
   match: { params },
   ...props
@@ -21,13 +34,11 @@ function EditRecipePage({
       console.warn("# no recipes available ..");
       findRecipe(params.id);
     }
-  }, [props.recipes, recipes.length, props.recipe, findRecipe]);
+  }, [params.id, recipes.length, findRecipe]);
 
   function handleChange(event) {
-    const { name, value, files } = event.target;
-
-    console.log(event.target);
     // TODO trigger action to alter the state
+    // const { name, value, files } = event.target;
     // setRecipe((prevRecipe) => ({
     //   ...prevRecipe,
     //   [name]: name === "photoUrl" ? URL.createObjectURL(files[0]) : value,
@@ -54,7 +65,6 @@ function EditRecipePage({
     saveRecipe(recipe);
   }
 
-  console.log("# RENDER: ", props);
   return recipes === 0 ? (
     <CircularProgress />
   ) : (
@@ -64,6 +74,9 @@ function EditRecipePage({
       onChange={handleChange}
       onSave={handleSave}
       saving={saving}
+      setName={setName}
+      setError={setError}
+      setYield={setYield}
     />
   );
 }
@@ -79,6 +92,11 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   findRecipe,
+  setName,
+  setCookMinutes,
+  setPrepMinutes,
+  setYield,
+  setError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditRecipePage);

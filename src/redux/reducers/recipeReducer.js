@@ -16,12 +16,12 @@ export default function reducer(state = initialState, action = {}) {
         list: action.recipes,
         loading: false,
       };
-    case types.RECIPES.SELECT:
+    case types.RECIPE.SELECT:
       return {
         ...state,
         selected: action.recipe,
       };
-    case types.RECIPES.FIND:
+    case types.RECIPE.FIND:
       return {
         ...state,
         recipeId: action.recipeId,
@@ -30,6 +30,16 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         new: action.recipe,
+      };
+    case types.RECIPE.UPDATE.NAME:
+      return {
+        ...state,
+        selected: { ...state.selected, name: action.name },
+      };
+    case types.RECIPE.UPDATE.YIELD:
+      return {
+        ...state,
+        selected: { ...state.selected, yield: action.yield },
       };
     default:
       return state;

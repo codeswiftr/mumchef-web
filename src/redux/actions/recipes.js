@@ -1,8 +1,6 @@
 export const types = {
   RECIPES: {
     SYNC: "RECIPES.SYNC",
-    FIND: "RECIPES.FIND",
-    SELECT: "RECIPES.SELECT",
     SET_STATUS: "RECIPES.SET_STATUS",
     NEW: {
       CHANGE: "RECIPES.NEW.CHANGE",
@@ -14,10 +12,20 @@ export const types = {
       SUCCESS: "RECIPES.LOAD.REQUEST",
     },
   },
+  RECIPE: {
+    SELECT: "RECIPE.SELECT",
+    FIND: "RECIPE.FIND",
+    UPDATE: {
+      NAME: "RECIPE.UPDATE.NAME",
+      YIELD: "RECIPE.UPDATE.YIELD",
+      PREP_MINUTES: "RECIPE.UPDATE.PREP_MINUTES",
+      COOK_MINUTES: "RECIPE.UPDATE.COOK_MINUTES",
+    },
+    SET_ERROR: "RECIPE.ERROR",
+  },
 };
 
 export const syncRecipes = (recipes) => {
-  // console.log("# sync recipes: ", recipes);
   return {
     type: types.RECIPES.SYNC,
     recipes,
@@ -34,11 +42,32 @@ export const saveNewRecipe = () => ({
 });
 
 export const findRecipe = (recipeId) => ({
-  type: types.RECIPES.FIND,
+  type: types.RECIPE.FIND,
   recipeId: recipeId,
 });
 
 export const selectRecipe = (recipe) => ({
-  type: types.RECIPES.SELECT,
+  type: types.RECIPE.SELECT,
   recipe: recipe,
+});
+export const setName = (name) => ({
+  type: types.RECIPE.UPDATE.NAME,
+  name,
+});
+export const setYield = (portions) => ({
+  type: types.RECIPE.UPDATE.YIELD,
+  yield: portions,
+});
+export const setPrepMinutes = (prepMinutes) => ({
+  type: types.RECIPE.UPDATE.PREP_MINUTES,
+  prepMinutes,
+});
+export const setCookMinutes = (cookMinutes) => ({
+  type: types.RECIPE.UPDATE.COOK_MINUTES,
+  cookMinutes,
+});
+
+export const setError = (error) => ({
+  type: types.RECIPE.SET_ERROR,
+  error,
 });

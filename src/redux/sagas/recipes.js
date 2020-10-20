@@ -31,7 +31,6 @@ function* setRecipeStatus(action) {
 }
 
 const recipesTransformer = ({ value }) => {
-  console.log("# recipe transfromer: ", value);
   return Object.keys(value).map((key) => ({
     ...value[key],
     id: key,
@@ -52,24 +51,13 @@ function* selectRecipeSaga({ recipeId }) {
 
   const recipes = yield select((state) => state.recipes.list);
 
-  // {
-  //   console.log(recipeId, state.recipes);
-  //   return state.recipes.list.find((item) => {
-  //     console.log("#--->", item.id);
-  //     return item.id === recipeId;
-  //   });
-  // });
   const recipe = recipes.find((item) => {
-    console.log("@--->", item.id, recipeId);
     return item.id === recipeId;
   });
-  console.log("# FOUND:", recipe);
   yield put(selectRecipe(recipe));
 }
 
 function* syncRecipesSaga() {
-  console.log("@ syncRecipesSaga.. ");
-
   // Start the sync saga
   let task = yield fork(rsf.database.sync, "recipes_web", {
     successActionCreator: syncRecipes,
@@ -82,12 +70,10 @@ function* syncRecipesSaga() {
 }
 
 export default function* rootSaga() {
-  // yield takeLatest("LOGIN.SUCCESS", syncRecipesSaga);
-  console.log("@ recipes root SAga");
   yield all([
     fork(syncRecipesSaga),
     takeEvery(types.RECIPES.NEW.SAVE, saveNewRecipe),
     takeEvery(types.RECIPES.SET_STATUS, setRecipeStatus),
-    takeEvery(types.RECIPES.FIND, selectRecipeSaga),
+    takeEvery(types.RECIPE.FIND, selectRecipeSaga),
   ]);
 }
