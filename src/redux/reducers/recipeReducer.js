@@ -5,6 +5,7 @@ const initialState = {
   new: "",
   selected: null,
   loading: true,
+  recipeId: null,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -19,6 +20,11 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         selected: action.recipe,
+      };
+    case types.RECIPES.FIND:
+      return {
+        ...state,
+        recipeId: action.recipeId,
       };
     case types.RECIPES.NEW.CHANGE:
       return {

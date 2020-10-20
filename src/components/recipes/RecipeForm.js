@@ -67,7 +67,7 @@ const StyledDivider = styled(Divider)`
 `;
 
 const RecipeForm = ({
-  recipe = {
+  selectedRecipe = {
     allergens: {},
   },
   onChange,
@@ -76,28 +76,17 @@ const RecipeForm = ({
   aggregate = initialState.aggregate,
   errors = {},
 }) => {
-  // Recipe name -- text
-  // Photos
-
-  // Yield --> slider
-  // Ingredients --> text array
-  // Instructions --> text array
-  // Allergens --> multiple select
-  // Categories -. multiple select
-
-  // Short description (if possible, not mandatory) -text area
-  // Preparation time (if possible, not mandatory) - slider\
-  // Cook time (if possible, not mandatory) --> slider
-  // Difficulty (if possible, not mandatory) ---> slect box
-  // Tips for making it tasty for adults as well (where possible, not mandatory) --> text array
-
-  console.log("#### RENDER:", recipe);
+  const newRecipe = {
+    allergens: {},
+  };
+  const recipe = selectedRecipe || newRecipe;
+  console.log("# FORM: ", recipe);
   return (
     <>
       <StyledPaper>
         <StyledForm>
           <Typography variant='h3' component='h4'>
-            {recipe.id ? "Edit" : "Add"} Recipe
+            {recipe && recipe.id ? "Edit" : "Add"} Recipe
           </Typography>
           <TextField
             required

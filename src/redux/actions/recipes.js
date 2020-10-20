@@ -35,10 +35,10 @@ export const saveNewRecipe = () => ({
 
 export const findRecipe = (recipeId) => ({
   type: types.RECIPES.FIND,
-  recipeId,
+  recipeId: recipeId,
 });
 
 export const selectRecipe = (recipe) => ({
   type: types.RECIPES.SELECT,
-  recipe,
+  recipe: recipe,
 });

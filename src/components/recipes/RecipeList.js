@@ -1,13 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import IconButton from "@material-ui/core/IconButton";
-import InfoIcon from "@material-ui/icons/Info";
-import { selectRecipe } from "../../redux/actions/recipes";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,12 +14,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     backgroundColor: theme.palette.background.paper,
   },
-  gridList: {
-    // width: 500,
-    // height: 450,
-  },
   icon: {
-    color: "rgba(255, 255, 255, 0.54)",
+    color: "rgba(255, 0, 0, 0.54)",
   },
 }));
 const RecipeList = ({ recipes, onDeleteClick, onSelectRecipe }) => {
@@ -32,10 +25,12 @@ const RecipeList = ({ recipes, onDeleteClick, onSelectRecipe }) => {
     <div className={classes.root}>
       <GridList className={classes.gridList} cols={3}>
         {recipes.map((recipe) => (
-          <GridListTile
-            key={recipe.photoUrl}
-            onClick={() => onSelectRecipe(recipe)}>
-            <img src={recipe.photoUrl} alt={recipe.name} />
+          <GridListTile key={recipe.photoUrl}>
+            <img
+              src={recipe.photoUrl}
+              alt={recipe.name}
+              onClick={() => onSelectRecipe(recipe)}
+            />
 
             <GridListTileBar
               title={recipe.name}
@@ -44,7 +39,7 @@ const RecipeList = ({ recipes, onDeleteClick, onSelectRecipe }) => {
                   aria-label={`info about ${recipe.name}`}
                   className={classes.icon}
                   onClick={() => onDeleteClick(recipe)}>
-                  <InfoIcon />
+                  <DeleteIcon />
                 </IconButton>
               }
             />

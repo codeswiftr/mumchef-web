@@ -3,10 +3,20 @@ import { connect } from "react-redux";
 import RecipeList from "../recipes/RecipeList";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useSnackbar } from "notistack";
-const RecipesPage = ({ recipes, history, syncRecipes, ...props }) => {
+import Button from "@material-ui/core/Button";
+import { selectRecipe } from "../../redux/actions/recipes";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import { useHistory } from "react-router-dom";
+const RecipesPage = ({ recipes, syncRecipes, selectRecipe, ...props }) => {
+  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   function handleDeleteRecipe(recipe) {
     enqueueSnackbar("Recipe deleted", { variant: "success" });
+  }
+
+  function handleSelectRecipe(recipe) {
+    selectRecipe(recipe);
+    history.push(`/recipe/${recipe.id}`);
   }
   return (
     <>
@@ -15,15 +25,16 @@ const RecipesPage = ({ recipes, history, syncRecipes, ...props }) => {
         <CircularProgress />
       ) : (
         <>
-          <button
-            style={{ marginBottom: 20 }}
-            className='btn btn-primary add-recipe'>
-            Add Recipe
-          </button>
+          <Button
+            variant='contained'
+            color='primary'
+            startIcon={<AddCircleIcon />}>
+            Add recipe
+          </Button>
 
           <RecipeList
             recipes={recipes}
-            onSelectRecipe={selectRecipe}
+            onSelectRecipe={handleSelectRecipe}
             onDeleteClick={handleDeleteRecipe}
           />
         </>

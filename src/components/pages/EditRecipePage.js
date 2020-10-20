@@ -1,36 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { toast } from "react-toastify";
 import RecipeForm from "../recipes/RecipeForm";
+import { findRecipe } from "../../redux/actions/recipes";
 import CircularProgress from "@material-ui/core/CircularProgress";
 function EditRecipePage({
   recipes = [],
   loadRecipes,
   saveRecipe,
   history,
+  findRecipe,
+  recipe,
+  match: { params },
   ...props
 }) {
-  const [recipe, setRecipe] = useState({ ...props.recipe });
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (recipes.length === 0) {
       console.warn("# no recipes available ..");
-    } else {
-      setRecipe({ ...props.recipe });
+      findRecipe(params.id);
     }
-  }, [props.recipes, recipes.length, props.recipe]);
+  }, [props.recipes, recipes.length, props.recipe, findRecipe]);
 
   function handleChange(event) {
     const { name, value, files } = event.target;
 
     console.log(event.target);
-    // debugger;
-    setRecipe((prevRecipe) => ({
-      ...prevRecipe,
-      [name]: name === "photoUrl" ? URL.createObjectURL(files[0]) : value,
-    }));
+    // TODO trigger action to alter the state
+    // setRecipe((prevRecipe) => ({
+    //   ...prevRecipe,
+    //   [name]: name === "photoUrl" ? URL.createObjectURL(files[0]) : value,
+    // }));
   }
 
   function formIsValid() {
@@ -50,22 +51,15 @@ function EditRecipePage({
     event.preventDefault();
     if (!formIsValid()) return;
     setSaving(true);
-    saveRecipe(recipe)
-      .then(() => {
-        toast.success("Recipe saved.");
-        history.push("/recipes");
-      })
-      .catch((error) => {
-        setSaving(false);
-        setErrors({ onSave: error.message });
-      });
+    saveRecipe(recipe);
   }
 
+  console.log("# RENDER: ", props);
   return recipes === 0 ? (
     <CircularProgress />
   ) : (
     <RecipeForm
-      recipe={recipe}
+      selectedRecipe={recipe}
       errors={errors}
       onChange={handleChange}
       onSave={handleSave}
@@ -74,16 +68,17 @@ function EditRecipePage({
   );
 }
 
-function mapStateToProps(state, ownProps) {
-  const id = ownProps.match.params.id;
-  const recipe = state.recipes.list.find((recipe) => recipe.id === id) || null;
+function mapStateToProps(state) {
   return {
-    recipe,
+    recipe: state.recipes.selected,
+    recipeId: state.recipes.recipeId,
     recipes: state.recipes.list,
     aggregate: state.aggregate,
   };
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  findRecipe,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditRecipePage);

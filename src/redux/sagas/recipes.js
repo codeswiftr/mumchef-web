@@ -6,9 +6,10 @@ import {
   takeEvery,
   take,
   cancel,
+  put,
 } from "redux-saga/effects";
 
-import { types, syncRecipes } from "../actions/recipes";
+import { types, syncRecipes, selectRecipe } from "../actions/recipes";
 
 import rsf from "../rsf";
 
@@ -46,8 +47,24 @@ function* waitFor(selector) {
   }
 }
 
-function* selectRecipeSaga(recipeId) {
-  yield call(waitFor, (state) => state.recipes.loaded === true);
+function* selectRecipeSaga({ recipeId }) {
+  yield call(waitFor, (state) => state.recipes.list[0]);
+
+  const recipes = yield select((state) => state.recipes.list);
+
+  // {
+  //   console.log(recipeId, state.recipes);
+  //   return state.recipes.list.find((item) => {
+  //     console.log("#--->", item.id);
+  //     return item.id === recipeId;
+  //   });
+  // });
+  const recipe = recipes.find((item) => {
+    console.log("@--->", item.id, recipeId);
+    return item.id === recipeId;
+  });
+  console.log("# FOUND:", recipe);
+  yield put(selectRecipe(recipe));
 }
 
 function* syncRecipesSaga() {
