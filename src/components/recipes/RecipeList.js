@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 const RecipeList = ({ recipes, onDeleteClick }) => (
@@ -28,9 +27,5 @@ const RecipeList = ({ recipes, onDeleteClick }) => (
     })}
   </div>
 );
-
-// RecipeList.propTypes = {
-//     recipes = PropTypes.array.isRequired
-// }
 
 export default RecipeList;

@@ -3,26 +3,17 @@ import React from "react";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
 import MultipleSelect from "../common/MultipleSelect";
-import TextArea from "../common/TextArea";
-import SelectInput from "../common/SelectInput";
+
 import ImageInput from "../common/ImageInput";
 import TimeSlider from "../common/TimeSlider";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
-import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
+
 import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import ListItemText from "@material-ui/core/ListItemText";
-import Select from "@material-ui/core/Select";
-import Checkbox from "@material-ui/core/Checkbox";
-import Chip from "@material-ui/core/Chip";
+
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
-import _ from "lodash";
 
 import initialState from "../../redux/reducers/initialState";
 
@@ -35,7 +26,7 @@ const PhotoInput = styled(ImageInput)`
 const StyledPaper = styled(Paper)`
   min-width: 375px;
   padding: 16px;
-  max-width: 80%;
+  max-width: 100%;
 `;
 const StyledButton = styled(Button)`
   background-color: #6772e5;
@@ -52,11 +43,9 @@ const StyledButton = styled(Button)`
 `;
 
 const StyledForm = styled(FormControl)`
-  ${({ theme }) => `
   min-width: 300px;
   padding: 8px;
   width: 100%;
-`}
 `;
 
 const StepField = styled(TextField)`
@@ -76,41 +65,17 @@ const TagField = styled(TextField)`
 const StyledDivider = styled(Divider)`
   margin: 80px 0 0 0;
 `;
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
 
 const RecipeForm = ({
-  recipe,
+  recipe = {
+    allergens: {},
+  },
   onChange,
   onSave,
   saving = false,
   aggregate = initialState.aggregate,
   errors = {},
 }) => {
-  const theme = useTheme();
-  // console.log(recipe);
-  let allergens = recipe.allergens || {};
-  // allergens = { ...allergens, test: false, test2: true };
-  allergens = _.keys(_.pickBy(allergens, (v) => v));
-
-  console.log(aggregate.allergens);
   // Recipe name -- text
   // Photos
 
@@ -232,7 +197,7 @@ const RecipeForm = ({
         {recipe.ingredients &&
           recipe.ingredients.map((item) => {
             return (
-              <>
+              <div key={item.fullDescription}>
                 <Divider />
                 <IngredientField
                   required
@@ -249,7 +214,7 @@ const RecipeForm = ({
                   defaultValue={item.name}
                 />
                 <Divider />
-              </>
+              </div>
             );
           })}
         <Divider />
@@ -270,21 +235,19 @@ const RecipeForm = ({
           Steps
         </Typography>
         {recipe.instructions &&
-          recipe.instructions.map((item) => {
+          recipe.instructions.map((item, index) => {
             return (
-              <>
-                <StepField
-                  id='standard-textarea'
-                  label='step'
-                  defaultValue={item.description}
-                  multiline
-                  variant='filled'
-                />
-              </>
+              <StepField
+                key={`step-${index}`}
+                label='step'
+                defaultValue={item.description}
+                multiline
+                variant='filled'
+              />
             );
           })}
         <StepField
-          id='standard-textarea'
+          id='new-step'
           label='new step'
           placeholder='instructions'
           variant='filled'

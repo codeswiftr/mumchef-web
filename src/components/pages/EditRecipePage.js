@@ -21,7 +21,7 @@ function EditRecipePage({
     } else {
       setRecipe({ ...props.recipe });
     }
-  }, [props.recipe]);
+  }, [props.recipes, recipes.length, props.recipe]);
 
   function handleChange(event) {
     const { name, value, files } = event.target;

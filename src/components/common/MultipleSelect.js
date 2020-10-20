@@ -1,6 +1,5 @@
 import React from "react";
-import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -43,7 +42,6 @@ const MenuProps = {
 
 export default function MultipleSelect({ options, label, defaultValue = [] }) {
   const classes = useStyles();
-  const theme = useTheme();
   const [selectedValues, setSelectedValues] = React.useState(defaultValue);
 
   const handleChange = (event) => {

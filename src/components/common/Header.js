@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
 import { login, logout } from "../../redux/actions/login";
 import { connect } from "react-redux";
 
 import { NavLink } from "react-router-dom";
 
-import { Link } from "react-router-dom";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -14,16 +13,12 @@ import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import HomeIcon from "@material-ui/icons/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
+import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Avatar from "@material-ui/core/Avatar";
-import Slide from "@material-ui/core/Slide";
 import styled from "styled-components";
 
 const Divider = styled.div`
@@ -96,41 +91,16 @@ const useStyles = makeStyles((theme) => ({
 export function Header(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  function HideOnScroll(props) {
-    const { children, window } = props;
-    // Note that you normally won't need to set the window ref as useScrollTrigger
-    // will default to window.
-    // This is only being set here because the demo is in an iframe.
-    const trigger = useScrollTrigger({ target: window ? window() : undefined });
-
-    return (
-      <Slide appear={false} direction='down' in={!trigger}>
-        {children}
-      </Slide>
-    );
-  }
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -157,8 +127,6 @@ export function Header(props) {
       </MenuItem>
     </Menu>
   );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
 
   return (
     <div className={classes.grow}>

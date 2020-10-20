@@ -1,39 +1,28 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Image from "material-ui-image";
 import Icon from "@material-ui/core/Icon";
 import Button from "@material-ui/core/Button";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  min-width: 327px;
+  min-height: 327px;
+`;
 const ImageInput = ({ name, label, onChange, placeholder, value, error }) => {
   let wrapperClass = "form-group";
   if (error && error.length > 0) {
     wrapperClass += " has-error";
   }
 
-  let imgPreview;
-  console.log(value);
-  if (value) {
-    imgPreview = (
-      <>
-        <Image src={value} cover />
-      </>
-    );
-  }
+  let imgPreview = <Image src={value} />;
 
   return (
     <div className={wrapperClass}>
       <label htmlFor={name}>{label}</label>
       <div className='field'>
-        <div className='form-group preview'>{imgPreview}</div>
+        <Wrapper>{imgPreview}</Wrapper>
 
         <div className='form-group'>
-          {/* <input
-            type='file'
-            className='form-control'
-            onChange={onChange}
-            // files={value}
-            name={name}
-          /> */}
-
           <input
             accept='image/*'
             style={{ display: "none" }}
@@ -52,15 +41,6 @@ const ImageInput = ({ name, label, onChange, placeholder, value, error }) => {
       </div>
     </div>
   );
-};
-
-ImageInput.propTypes = {
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
-  value: PropTypes.string,
-  error: PropTypes.string,
 };
 
 export default ImageInput;

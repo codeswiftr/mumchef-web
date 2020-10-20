@@ -8,15 +8,15 @@ const theme = createMuiTheme({
     width: "100%",
   },
   palette: {
-    // primary: {
-    //   main: "#556cd6",
-    // },
-    // secondary: {
-    //   main: "#19857b",
-    // },
-    // error: {
-    //   main: red.A400,
-    // },
+    primary: {
+      main: "#556cd6",
+    },
+    secondary: {
+      main: "#19857b",
+    },
+    error: {
+      main: red.A400,
+    },
     background: {
       default: "#f5f5f5",
     },

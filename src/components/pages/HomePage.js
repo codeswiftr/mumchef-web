@@ -1,13 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { login, logout } from "../../redux/actions/login";
 import { connect } from "react-redux";
-// import { button } from "@atoms";
-// import { Example } from "@molecules";
 const HomePage = (props) => {
-  const [recipes, setRecipes] = useState([]);
-  const startLogin = useCallback(() => {
-    login();
-  }, [login]);
   useEffect(() => {
     console.log("# dashboard:");
     return () => {

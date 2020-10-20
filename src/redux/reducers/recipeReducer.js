@@ -3,6 +3,8 @@ import { types } from "../actions/recipes";
 const initialState = {
   list: [],
   new: "",
+  selected: null,
+  loaded: false,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -11,11 +13,17 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         list: action.recipes,
+        loaded: true,
+      };
+    case types.RECIPES.SELECT:
+      return {
+        ...state,
+        selected: action.recipe,
       };
     case types.RECIPES.NEW.CHANGE:
       return {
         ...state,
-        new: action.todo,
+        new: action.recipe,
       };
     default:
       return state;

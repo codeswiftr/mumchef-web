@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 
@@ -48,9 +47,6 @@ export default function TimeSlider({ label, marks, unit = "m" }) {
     return `${value} ${unit}`;
   }
 
-  function valueLabelFormat(value) {
-    return marks.findIndex((mark) => mark.value === value) + 1;
-  }
   return (
     <div>
       <Typography id='discrete-slider-restrict' gutterBottom>

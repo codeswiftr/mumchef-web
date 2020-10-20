@@ -1,6 +1,8 @@
 export const types = {
   RECIPES: {
     SYNC: "RECIPES.SYNC",
+    FIND: "RECIPES.FIND",
+    SELECT: "RECIPES.SELECT",
     SET_STATUS: "RECIPES.SET_STATUS",
     NEW: {
       CHANGE: "RECIPES.NEW.CHANGE",
@@ -29,4 +31,14 @@ export const changeNewRecipe = (recipe) => ({
 
 export const saveNewRecipe = () => ({
   type: types.RECIPES.NEW.SAVE,
+});
+
+export const findRecipe = (recipeId) => ({
+  type: types.RECIPES.FIND,
+  recipeId,
+});
+
+export const selectRecipe = (recipe) => ({
+  type: types.RECIPES.SELECT,
+  recipe,
 });

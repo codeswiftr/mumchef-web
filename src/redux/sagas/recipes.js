@@ -6,7 +6,6 @@ import {
   takeEvery,
   take,
   cancel,
-  takeLatest,
 } from "redux-saga/effects";
 
 import { types, syncRecipes } from "../actions/recipes";
@@ -38,6 +37,19 @@ const recipesTransformer = ({ value }) => {
   }));
 };
 
+function* waitFor(selector) {
+  if (yield select(selector)) return; // (1)
+
+  while (true) {
+    yield take("*"); // (1a)
+    if (yield select(selector)) return; // (1b)
+  }
+}
+
+function* selectRecipeSaga(recipeId) {
+  yield call(waitFor, (state) => state.recipes.loaded === true);
+}
+
 function* syncRecipesSaga() {
   console.log("@ syncRecipesSaga.. ");
 
@@ -53,11 +65,12 @@ function* syncRecipesSaga() {
 }
 
 export default function* rootSaga() {
-  yield takeLatest("LOGIN.SUCCESS", syncRecipesSaga);
+  // yield takeLatest("LOGIN.SUCCESS", syncRecipesSaga);
   console.log("@ recipes root SAga");
   yield all([
     fork(syncRecipesSaga),
     takeEvery(types.RECIPES.NEW.SAVE, saveNewRecipe),
     takeEvery(types.RECIPES.SET_STATUS, setRecipeStatus),
+    takeEvery(types.RECIPES.FIND, selectRecipeSaga),
   ]);
 }
