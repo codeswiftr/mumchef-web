@@ -41,6 +41,37 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         selected: { ...state.selected, yield: action.yield },
       };
+    case types.RECIPE.SET_ERROR:
+      return {
+        ...state,
+        selected: { ...state.selected, error: action.error },
+      };
+    case types.RECIPE.UPDATE.PREP_MINUTES:
+      return {
+        ...state,
+        selected: { ...state.selected, prepMinutes: action.prepMinutes },
+      };
+    case types.RECIPE.UPDATE.COOK_MINUTES:
+      return {
+        ...state,
+        selected: { ...state.selected, cookMinutes: action.cookMinutes },
+      };
+
+    case types.RECIPE.UPDATE.PHOTO_URL:
+      return {
+        ...state,
+        selected: { ...state.selected, photoUrl: action.photoUrl },
+      };
+    case types.RECIPE.SET_FILE:
+      return {
+        ...state,
+        selected: { ...state.selected, photoFile: action.file },
+      };
+    case types.RECIPE.UPLOAD_FILE:
+      return {
+        ...state,
+        loading: true,
+      };
     default:
       return state;
   }

@@ -7,6 +7,9 @@ import {
   setCookMinutes,
   setPrepMinutes,
   setError,
+  setPhotoUrl,
+  setPhotoFile,
+  uploadPhoto,
   setYield,
 } from "../../redux/actions/recipes";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -21,6 +24,9 @@ function EditRecipePage({
   setPrepMinutes,
   setError,
   setYield,
+  setPhotoUrl,
+  setPhotoFile,
+  uploadPhoto,
 
   recipe,
   match: { params },
@@ -77,6 +83,11 @@ function EditRecipePage({
       setName={setName}
       setError={setError}
       setYield={setYield}
+      setCookMinutes={setCookMinutes}
+      setPrepMinutes={setPrepMinutes}
+      setPhotoUrl={setPhotoUrl}
+      setPhotoFile={setPhotoFile}
+      uploadPhoto={uploadPhoto}
     />
   );
 }
@@ -97,6 +108,9 @@ const mapDispatchToProps = {
   setPrepMinutes,
   setYield,
   setError,
+  setPhotoUrl,
+  setPhotoFile,
+  uploadPhoto,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditRecipePage);

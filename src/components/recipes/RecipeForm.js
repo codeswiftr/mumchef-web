@@ -77,6 +77,11 @@ const RecipeForm = ({
   setName,
   setError,
   setYield,
+  setCookMinutes,
+  setPrepMinutes,
+  setPhotoUrl,
+  setPhotoFile,
+  uploadPhoto,
   errors = {},
   ...props
 }) => {
@@ -102,6 +107,12 @@ const RecipeForm = ({
   const handleYieldChange = (event, newValue) => {
     setYield(newValue);
   };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setPhotoFile(file);
+    uploadPhoto();
+  };
   return (
     <>
       <StyledPaper>
@@ -123,18 +134,20 @@ const RecipeForm = ({
             name='photoUrl'
             label='Photo'
             value={recipe.photoUrl}
-            onChange={onChange}
+            onChange={handleImageChange}
             error={errors.photoUrl}></PhotoInput>
 
           <TimeSlider
             id='prepTime'
             label='Preparation Minutes'
-            currentValue={recipe.prepMinutes}
+            value={recipe.prepMinutes}
+            setValue={setPrepMinutes}
           />
           <TimeSlider
             id='cookTime'
             label='Cooking Minutes'
-            currentValue={recipe.cookMinutes}
+            value={recipe.cookMinutes}
+            setValue={setCookMinutes}
           />
           <Typography id='discrete-slider-restrict' gutterBottom>
             Portions yielded

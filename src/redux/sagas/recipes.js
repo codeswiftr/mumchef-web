@@ -9,7 +9,12 @@ import {
   put,
 } from "redux-saga/effects";
 
-import { types, syncRecipes, selectRecipe } from "../actions/recipes";
+import {
+  types,
+  syncRecipes,
+  selectRecipe,
+  setPhotoUrl,
+} from "../actions/recipes";
 
 import rsf from "../rsf";
 
@@ -68,6 +73,50 @@ function* syncRecipesSaga() {
   yield take("LOGOUT");
   yield cancel(task);
 }
+function string_to_slug(str) {
+  str = str.replace(/^\s+|\s+$/g, ""); // trim
+  str = str.toLowerCase();
+
+  // remove accents, swap ñ for n, etc
+  var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+  var to = "aaaaeeeeiiiioooouuuunc------";
+  for (var i = 0, l = from.length; i < l; i++) {
+    str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
+  }
+
+  str = str
+    .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
+    .replace(/\s+/g, "-") // collapse whitespace and replace by -
+    .replace(/-+/g, "-"); // collapse dashes
+
+  return str;
+}
+
+function* syncPhotoUrl(filePath) {
+  try {
+    const url = yield call(rsf.storage.getDownloadURL, filePath);
+    yield put(setPhotoUrl(url));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function* uploadFileSaga(action) {
+  const recipe = yield select((state) => state.recipes.selected);
+  const file = recipe.photoFile;
+  console.log("### SAGA:", file.name, action.filename);
+  const filePath = `recipes/${string_to_slug(recipe.name)}-${file.name}`;
+  const task = rsf.storage.uploadFile(filePath, file);
+
+  task.on("state_changed", (snapshot) => {
+    const percentage = (snapshot.bytesTransferred * 100) / snapshot.totalBytes;
+    console.log(`${percentage}%`);
+  });
+
+  yield task;
+
+  yield call(syncPhotoUrl, filePath);
+}
 
 export default function* rootSaga() {
   yield all([
@@ -75,5 +124,6 @@ export default function* rootSaga() {
     takeEvery(types.RECIPES.NEW.SAVE, saveNewRecipe),
     takeEvery(types.RECIPES.SET_STATUS, setRecipeStatus),
     takeEvery(types.RECIPE.FIND, selectRecipeSaga),
+    takeEvery(types.RECIPE.UPLOAD_FILE, uploadFileSaga),
   ]);
 }

@@ -20,8 +20,11 @@ export const types = {
       YIELD: "RECIPE.UPDATE.YIELD",
       PREP_MINUTES: "RECIPE.UPDATE.PREP_MINUTES",
       COOK_MINUTES: "RECIPE.UPDATE.COOK_MINUTES",
+      PHOTO_URL: "RECIPE.UPDATE.PHOTO_URL",
     },
     SET_ERROR: "RECIPE.ERROR",
+    SET_FILE: "RECIPE.FILE",
+    UPLOAD_FILE: "UPLOAD.FILE",
   },
 };
 
@@ -70,4 +73,18 @@ export const setCookMinutes = (cookMinutes) => ({
 export const setError = (error) => ({
   type: types.RECIPE.SET_ERROR,
   error,
+});
+
+export const setPhotoUrl = (photoUrl) => ({
+  type: types.RECIPE.UPDATE.PHOTO_URL,
+  photoUrl,
+});
+
+export const setPhotoFile = (file) => ({
+  type: types.RECIPE.SET_FILE,
+  file,
+});
+
+export const uploadPhoto = () => ({
+  type: types.RECIPE.UPLOAD_FILE,
 });

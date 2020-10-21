@@ -41,12 +41,17 @@ const defaultMarks = [
   },
 ];
 
-export default function TimeSlider({ label, marks, unit = "m", currentValue }) {
+export default function TimeSlider({
+  label,
+  marks,
+  unit = "m",
+  value,
+  setValue,
+}) {
   marks = marks || defaultMarks;
   function valuetext(value, x, unit = "") {
     return `${value} ${unit}`;
   }
-  const [value, setValue] = React.useState(currentValue);
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);

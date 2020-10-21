@@ -27,7 +27,9 @@ const ImageInput = ({ name, label, onChange, placeholder, value, error }) => {
             accept='image/*'
             style={{ display: "none" }}
             id='raised-button-file'
-            onChange={onChange}
+            onChange={(x) => {
+              onChange(x);
+            }}
             type='file'
             name={name}
           />
