@@ -14,19 +14,31 @@ import FormControl from "@material-ui/core/FormControl";
 
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
-
+import Grid from "@material-ui/core/Grid";
 import initialState from "../../redux/reducers/initialState";
 
 const PhotoInput = styled(ImageInput)`
   bacground: red;
   background-color: blue;
   width: 300px;
+  max-width: 450px;
+  > img {
+    max-width: 450px;
+  }
 `;
 
 const StyledPaper = styled(Paper)`
   min-width: 375px;
   padding: 16px;
-  max-width: 450px;
+  max-width: 500px;
+  min-height: 1045px;
+  margin: auto;
+`;
+
+const StepPaper = styled(StyledPaper)`
+  max-width: 90%;
+
+  min-height: 110%;
 `;
 const StyledButton = styled(Button)`
   background-color: #6772e5;
@@ -76,7 +88,8 @@ const TagField = styled(TextField)`
   margin: 8px 0;
 `;
 const StyledDivider = styled(Divider)`
-  margin: 80px 0 0 0;
+  margin: 10px 0 0 0;
+  opacity: 0;
 `;
 
 const RecipeForm = ({
@@ -161,168 +174,171 @@ const RecipeForm = ({
     uploadPhoto();
   };
   return (
-    <>
-      <StyledPaper>
-        <StyledForm>
-          <Typography variant='h3' component='h4'>
-            {recipe && recipe.id ? "Edit" : "Add"} Recipe
+    <Grid container justify='center'>
+      <Grid justify='center' item xs={12} md={6} xl={3}>
+        <StyledPaper>
+          <StyledForm>
+            <Typography variant='h3' component='h4'>
+              {recipe && recipe.id ? "Edit" : "Add"} Recipe
+            </Typography>
+            <TextField
+              required
+              label='Recipe Name'
+              variant='outlined'
+              margin='dense'
+              value={recipe.name}
+              onChange={handleChange}
+            />
+
+            <PhotoInput
+              className='img-thumbnail'
+              name='photoUrl'
+              label='Photo'
+              value={recipe.photoUrl}
+              onChange={handleImageChange}
+              error={errors.photoUrl}></PhotoInput>
+
+            <TimeSlider
+              id='prepTime'
+              label='Preparation Minutes'
+              value={recipe.prepMinutes}
+              setValue={setPrepMinutes}
+            />
+            <TimeSlider
+              id='cookTime'
+              label='Cooking Minutes'
+              value={recipe.cookMinutes}
+              setValue={setCookMinutes}
+            />
+            <Typography id='discrete-slider-restrict' gutterBottom>
+              Portions yielded
+            </Typography>
+            <Slider
+              value={recipe.yield}
+              max={20}
+              marks={[
+                {
+                  value: 1,
+
+                  label: "1",
+                },
+                {
+                  value: 2,
+
+                  label: "2",
+                },
+                {
+                  value: 4,
+                  label: "4",
+                },
+                {
+                  value: 8,
+
+                  label: "8",
+                },
+                {
+                  value: 12,
+
+                  label: "12",
+                },
+                {
+                  value: 16,
+                  label: "16",
+                },
+                {
+                  value: 20,
+
+                  label: "20",
+                },
+              ]}
+              step={null}
+              aria-labelledby='discrete-slider-restrict'
+              valueLabelDisplay='on'
+              onChange={handleYieldChange}
+            />
+            <StyledDivider />
+            <MultipleSelect
+              options={aggregate.allergens}
+              values={recipe.allergens}
+              setValues={setAllergens}
+              label='Allergens'></MultipleSelect>
+
+            <StyledDivider />
+            <MultipleSelect
+              options={aggregate.categories}
+              values={recipe.categories}
+              setValues={setCategories}
+              label='Categories'></MultipleSelect>
+            <StyledDivider />
+          </StyledForm>
+        </StyledPaper>
+      </Grid>
+      <Grid item xs={12} md={6} xl={4}>
+        <StyledPaper>
+          <Typography variant='h4' component='h5'>
+            Ingredients
           </Typography>
-          <TextField
+          {recipe.ingredients &&
+            recipe.ingredients.map((item, index) => {
+              return (
+                <div key={item.fullDescription}>
+                  <Divider />
+                  <IngredientField
+                    required
+                    label='Ingredient'
+                    variant='filled'
+                    margin='dense'
+                    value={item.fullDescription}
+                    index={index}
+                    onChange={(e) => {
+                      handleIngredientChange(
+                        index,
+                        "fullDescription",
+                        e.target.value
+                      );
+                    }}
+                  />
+                  <TagField
+                    required
+                    label='Tag'
+                    variant='filled'
+                    margin='dense'
+                    value={item.name}
+                    index={index}
+                    onChange={(e) => {
+                      handleIngredientChange(index, "name", e.target.value);
+                    }}
+                  />
+                  <Divider />
+                </div>
+              );
+            })}
+          <Divider />
+          <IngredientField
             required
-            label='Recipe Name'
-            variant='outlined'
+            label='new ingredient'
+            placeholder='ingredient and quantity'
+            variant='filled'
             margin='dense'
-            value={recipe.name}
-            onChange={handleChange}
+            value={newIngredient}
+            onChange={(e) => setNewIngredient(e.target.value)}
           />
-
-          <PhotoInput
-            className='img-thumbnail'
-            name='photoUrl'
-            label='Photo'
-            value={recipe.photoUrl}
-            onChange={handleImageChange}
-            error={errors.photoUrl}></PhotoInput>
-
-          <TimeSlider
-            id='prepTime'
-            label='Preparation Minutes'
-            value={recipe.prepMinutes}
-            setValue={setPrepMinutes}
+          <TagField
+            required
+            label='new tag'
+            placeholder='tag'
+            variant='filled'
+            margin='dense'
+            value={newTag}
+            onChange={(e) => setNewTag(e.target.value)}
           />
-          <TimeSlider
-            id='cookTime'
-            label='Cooking Minutes'
-            value={recipe.cookMinutes}
-            setValue={setCookMinutes}
-          />
-          <Typography id='discrete-slider-restrict' gutterBottom>
-            Portions yielded
-          </Typography>
-          <Slider
-            value={recipe.yield}
-            max={20}
-            marks={[
-              {
-                value: 1,
-
-                label: "1",
-              },
-              {
-                value: 2,
-
-                label: "2",
-              },
-              {
-                value: 4,
-                label: "4",
-              },
-              {
-                value: 8,
-
-                label: "8",
-              },
-              {
-                value: 12,
-
-                label: "12",
-              },
-              {
-                value: 16,
-                label: "16",
-              },
-              {
-                value: 20,
-
-                label: "20",
-              },
-            ]}
-            step={null}
-            aria-labelledby='discrete-slider-restrict'
-            valueLabelDisplay='on'
-            onChange={handleYieldChange}
-          />
+          <Divider />
+          <AddButton onClick={handleNewIngredient}>Save Ingredient</AddButton>
           <StyledDivider />
-          <MultipleSelect
-            options={aggregate.allergens}
-            values={recipe.allergens}
-            setValues={setAllergens}
-            label='Allergens'></MultipleSelect>
-
-          <StyledDivider />
-          <MultipleSelect
-            options={aggregate.categories}
-            values={recipe.categories}
-            setValues={setCategories}
-            label='Categories'></MultipleSelect>
-          <StyledDivider />
-        </StyledForm>
-      </StyledPaper>
-
-      <StyledPaper>
-        <Typography variant='h4' component='h5'>
-          Ingredients
-        </Typography>
-        {recipe.ingredients &&
-          recipe.ingredients.map((item, index) => {
-            return (
-              <div key={item.fullDescription}>
-                <Divider />
-                <IngredientField
-                  required
-                  label='Ingredient'
-                  variant='filled'
-                  margin='dense'
-                  value={item.fullDescription}
-                  index={index}
-                  onChange={(e) => {
-                    handleIngredientChange(
-                      index,
-                      "fullDescription",
-                      e.target.value
-                    );
-                  }}
-                />
-                <TagField
-                  required
-                  label='Tag'
-                  variant='filled'
-                  margin='dense'
-                  value={item.name}
-                  index={index}
-                  onChange={(e) => {
-                    handleIngredientChange(index, "name", e.target.value);
-                  }}
-                />
-                <Divider />
-              </div>
-            );
-          })}
-        <Divider />
-        <IngredientField
-          required
-          label='new ingredient'
-          placeholder='ingredient and quantity'
-          variant='filled'
-          margin='dense'
-          value={newIngredient}
-          onChange={(e) => setNewIngredient(e.target.value)}
-        />
-        <TagField
-          required
-          label='new tag'
-          placeholder='tag'
-          variant='filled'
-          margin='dense'
-          value={newTag}
-          onChange={(e) => setNewTag(e.target.value)}
-        />
-        <Divider />
-        <AddButton onClick={handleNewIngredient}>Save Ingredient</AddButton>
-        <StyledDivider />
-      </StyledPaper>
-
-      <StyledPaper>
+        </StyledPaper>
+      </Grid>
+      <Grid item xs={12} md={10} xl={5}></Grid>
+      <StepPaper>
         <Typography variant='h4' component='h5'>
           Steps
         </Typography>
@@ -354,10 +370,8 @@ const RecipeForm = ({
         <StyledDivider />
 
         <StyledButton onClick={onSave}>Submit</StyledButton>
-      </StyledPaper>
-    </>
-
-    // </form>
+      </StepPaper>
+    </Grid>
   );
 };
 
