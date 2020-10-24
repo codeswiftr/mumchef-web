@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import RecipeForm from "../recipes/RecipeForm";
+import { Alert } from "../App";
 import {
   findRecipe,
   setName,
@@ -19,6 +20,7 @@ import {
   addIngredient,
   saveRecipe,
   resetRecipe,
+  consumeSnack,
 } from "../../redux/actions/recipes";
 import CircularProgress from "@material-ui/core/CircularProgress";
 function EditRecipePage({
@@ -43,6 +45,8 @@ function EditRecipePage({
   addStep,
   resetRecipe,
   recipe,
+  snack,
+  consumeSnack,
   match: { params },
   ...props
 }) {
@@ -82,26 +86,33 @@ function EditRecipePage({
   return recipes === 0 ? (
     <CircularProgress />
   ) : (
-    <RecipeForm
-      selectedRecipe={recipe}
-      errors={errors}
-      onSave={handleSave}
-      saving={saving}
-      setName={setName}
-      setError={setError}
-      setYield={setYield}
-      setAllergens={setAllergens}
-      setCategories={setCategories}
-      setCookMinutes={setCookMinutes}
-      setPrepMinutes={setPrepMinutes}
-      setPhotoUrl={setPhotoUrl}
-      setPhotoFile={setPhotoFile}
-      uploadPhoto={uploadPhoto}
-      updateIngredient={updateIngredient}
-      updateStep={updateStep}
-      addIngredient={addIngredient}
-      addStep={addStep}
-    />
+    <>
+      {snack && (
+        <Alert onClose={consumeSnack} severity={snack.severity}>
+          {snack.message}
+        </Alert>
+      )}
+      <RecipeForm
+        selectedRecipe={recipe}
+        errors={errors}
+        onSave={handleSave}
+        saving={saving}
+        setName={setName}
+        setError={setError}
+        setYield={setYield}
+        setAllergens={setAllergens}
+        setCategories={setCategories}
+        setCookMinutes={setCookMinutes}
+        setPrepMinutes={setPrepMinutes}
+        setPhotoUrl={setPhotoUrl}
+        setPhotoFile={setPhotoFile}
+        uploadPhoto={uploadPhoto}
+        updateIngredient={updateIngredient}
+        updateStep={updateStep}
+        addIngredient={addIngredient}
+        addStep={addStep}
+      />
+    </>
   );
 }
 
@@ -111,6 +122,7 @@ function mapStateToProps(state) {
     recipeId: state.recipes.recipeId,
     recipes: state.recipes.list,
     aggregate: state.aggregate,
+    snack: state.recipes.snack,
   };
 }
 
@@ -132,6 +144,7 @@ const mapDispatchToProps = {
   addStep,
   saveRecipe,
   resetRecipe,
+  consumeSnack,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditRecipePage);

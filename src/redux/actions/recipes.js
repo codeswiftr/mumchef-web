@@ -29,6 +29,8 @@ export const types = {
     },
     RESET: "RECIPE.RESET",
     SAVE: "RECIPE.SAVE",
+    SAVE_SUCCESS: "RECIPE.SAVE_SUCCESS",
+    CONSUME_SNACK: "RECIPE.CONSUME_SNACK",
     ADD: {
       INGREDIENT: "RECIPE.ADD.INGREDIENTS",
       STEP: "RECIPE.ADD.STEP",
@@ -54,6 +56,14 @@ export const changeNewRecipe = (recipe) => ({
 
 export const saveRecipe = () => ({
   type: types.RECIPE.SAVE,
+});
+
+export const saveRecipeSuccessful = () => ({
+  type: types.RECIPE.SAVE_SUCCESS,
+});
+
+export const consumeSnack = () => ({
+  type: types.RECIPE.CONSUME_SNACK,
 });
 
 export const resetRecipe = () => ({

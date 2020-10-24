@@ -7,10 +7,20 @@ import Header from "./common/Header";
 import RecipesPage from "./pages/RecipesPage";
 import EditRecipePage from "./pages/EditRecipePage";
 import { SnackbarProvider } from "notistack";
+import MuiAlert from "@material-ui/lab/Alert";
+import styled from "styled-components";
+function BaseAlert(props) {
+  return <MuiAlert elevation={6} variant='filled' {...props} />;
+}
+export const Alert = styled(BaseAlert)`
+  position: fixed;
+  z-index: 999;
+  bottom: 20px;
+`;
 
 function App() {
   return (
-    <SnackbarProvider maxSnack={3}>
+    <SnackbarProvider maxSnack={3} autoHideDuration={6000}>
       <Header />
       <Switch>
         <Route exact path='/' component={RecipesPage} />

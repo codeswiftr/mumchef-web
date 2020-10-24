@@ -14,6 +14,7 @@ import {
   syncRecipes,
   selectRecipe,
   setPhotoUrl,
+  saveRecipeSuccessful,
 } from "../actions/recipes";
 import { push } from "connected-react-router";
 
@@ -30,7 +31,7 @@ function* saveRecipe() {
   });
 
   console.log("# SAGA saveRecipe:", { user, newRecipe, res });
-
+  yield put(saveRecipeSuccessful());
   yield put(push("/"));
 }
 

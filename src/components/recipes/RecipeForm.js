@@ -26,7 +26,7 @@ const PhotoInput = styled(ImageInput)`
 const StyledPaper = styled(Paper)`
   min-width: 375px;
   padding: 16px;
-  max-width: 100%;
+  max-width: 450px;
 `;
 const StyledButton = styled(Button)`
   background-color: #6772e5;

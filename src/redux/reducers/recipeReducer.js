@@ -13,7 +13,7 @@ const initialState = {
   list: [],
   new: "",
   selected: { ...emptyRecipe },
-  snack: {},
+  snack: null,
   loading: true,
   recipeId: null,
 };
@@ -79,11 +79,17 @@ export default function reducer(state = initialState, action = {}) {
         selected: { ...emptyRecipe },
       };
 
-    case types.RECIPE.SAVE.SUCCESS:
+    case types.RECIPE.SAVE_SUCCESS:
       console.log("# REDUCER: save successful");
       return {
         ...state,
         snack: { message: "Recipe saved successfully!", severity: "success" },
+      };
+
+    case types.RECIPE.CONSUME_SNACK:
+      return {
+        ...state,
+        snack: undefined,
       };
 
     case types.RECIPE.UPDATE.PREP_MINUTES:
@@ -110,6 +116,7 @@ export default function reducer(state = initialState, action = {}) {
     case types.RECIPE.UPDATE.PHOTO_URL:
       return {
         ...state,
+        snack: { message: "Image uploaded successfully!", severity: "success" },
         selected: { ...state.selected, photoUrl: action.photoUrl },
       };
     case types.RECIPE.SET_FILE:
