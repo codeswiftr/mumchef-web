@@ -265,7 +265,6 @@ const RecipeForm = ({
         </Typography>
         {recipe.ingredients &&
           recipe.ingredients.map((item, index) => {
-            // console.log(`# ${item.fullDescription}:${index} `);
             return (
               <div key={item.fullDescription}>
                 <Divider />

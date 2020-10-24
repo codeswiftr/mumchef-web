@@ -1,17 +1,19 @@
 import { types } from "../actions/recipes";
 
+const emptyRecipe = {
+  cookMinutes: 15,
+  prepMinutes: 10,
+  yield: 4,
+  ingredients: [],
+  instructions: [],
+  photoUrl:
+    "https://firebasestorage.googleapis.com/v0/b/babyledweaning-cb434.appspot.com/o/no-photo-available.png?alt=media&token=4f58833d-84db-4678-9d6b-5a4b572b5c2b",
+};
 const initialState = {
   list: [],
   new: "",
-  selected: {
-    cookMinutes: 15,
-    prepMinutes: 10,
-    yield: 4,
-    ingredients: [],
-    instructions: [],
-    photoUrl:
-      "https://firebasestorage.googleapis.com/v0/b/babyledweaning-cb434.appspot.com/o/no-photo-available.png?alt=media&token=4f58833d-84db-4678-9d6b-5a4b572b5c2b",
-  },
+  selected: { ...emptyRecipe },
+  snack: {},
   loading: true,
   recipeId: null,
 };
@@ -42,6 +44,7 @@ export default function reducer(state = initialState, action = {}) {
     case types.RECIPE.SELECT:
       return {
         ...state,
+        snack: {},
         selected: action.recipe,
       };
     case types.RECIPE.FIND:
@@ -69,6 +72,22 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         selected: { ...state.selected, error: action.error },
       };
+
+    case types.RECIPE.RESET:
+      console.log("# REDUCER -> reset");
+      return {
+        ...state,
+        snack: {},
+        selected: { ...emptyRecipe },
+      };
+
+    case types.RECIPE.SAVE.SUCCESS:
+      console.log("# REDUCER: save successful");
+      return {
+        ...state,
+        snack: { message: "Recipe saved successfully!", severity: "success" },
+      };
+
     case types.RECIPE.UPDATE.PREP_MINUTES:
       return {
         ...state,

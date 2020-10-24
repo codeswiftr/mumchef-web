@@ -16,7 +16,6 @@ import Menu from "@material-ui/core/Menu";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Avatar from "@material-ui/core/Avatar";
 import styled from "styled-components";
@@ -53,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   searchIcon: {
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(2, 2),
     height: "100%",
     position: "absolute",
     pointerEvents: "none",
@@ -67,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    paddingLeft: `calc(1.5em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
@@ -93,10 +92,6 @@ export function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -124,6 +119,17 @@ export function Header(props) {
       </MenuItem>
       <MenuItem onClick={props.logout} disabled={!props.loggedIn}>
         Logout
+      </MenuItem>
+      <MenuItem>
+        Review
+        <IconButton
+          aria-label='show 17 new notifications'
+          color='inherit'
+          disabled>
+          <Badge badgeContent={17} color='secondary'>
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
       </MenuItem>
     </Menu>
   );
@@ -160,31 +166,10 @@ export function Header(props) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label='show 4 new mails' color='inherit'>
-              <Badge badgeContent={4} color='secondary'>
-                <MailIcon />
-              </Badge>
-            </IconButton>
             <IconButton aria-label='show 17 new notifications' color='inherit'>
               <Badge badgeContent={17} color='secondary'>
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
-            <IconButton
-              edge='end'
-              aria-label='account of current user'
-              aria-controls={menuId}
-              aria-haspopup='true'
-              onClick={handleProfileMenuOpen}
-              color='inherit'>
-              {props.loggedIn ? (
-                <Avatar
-                  alt={props.user.displayName}
-                  src={props.user.photoURL}
-                />
-              ) : (
-                <AccountCircle />
-              )}
             </IconButton>
           </div>
 
@@ -223,6 +208,15 @@ export function Header(props) {
               </MenuItem>
               <MenuItem onClick={props.logout} disabled={!props.loggedIn}>
                 Logout
+              </MenuItem>
+              <MenuItem>
+                <IconButton
+                  aria-label='show 17 new notifications'
+                  color='inherit'>
+                  <Badge badgeContent={17} color='secondary'>
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
               </MenuItem>
             </Menu>
           </div>

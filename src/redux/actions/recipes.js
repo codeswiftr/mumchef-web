@@ -27,6 +27,7 @@ export const types = {
       INGREDIENT: "RECIPE.UPDATE.INGREDIENTS",
       STEP: "RECIPE.UPDATE.STEP",
     },
+    RESET: "RECIPE.RESET",
     SAVE: "RECIPE.SAVE",
     ADD: {
       INGREDIENT: "RECIPE.ADD.INGREDIENTS",
@@ -53,6 +54,10 @@ export const changeNewRecipe = (recipe) => ({
 
 export const saveRecipe = () => ({
   type: types.RECIPE.SAVE,
+});
+
+export const resetRecipe = () => ({
+  type: types.RECIPE.RESET,
 });
 
 export const findRecipe = (recipeId) => ({

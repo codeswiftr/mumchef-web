@@ -18,6 +18,7 @@ import {
   addStep,
   addIngredient,
   saveRecipe,
+  resetRecipe,
 } from "../../redux/actions/recipes";
 import CircularProgress from "@material-ui/core/CircularProgress";
 function EditRecipePage({
@@ -40,7 +41,7 @@ function EditRecipePage({
   updateStep,
   addIngredient,
   addStep,
-
+  resetRecipe,
   recipe,
   match: { params },
   ...props
@@ -51,9 +52,13 @@ function EditRecipePage({
   useEffect(() => {
     if (recipes.length === 0) {
       console.warn("# no recipes available ..");
-      if (params.id !== "new") findRecipe(params.id);
+      if (params.id !== "new") {
+        findRecipe(params.id);
+      } else {
+        resetRecipe();
+      }
     }
-  }, [params.id, recipes.length, findRecipe]);
+  }, [params.id, recipes.length, findRecipe, resetRecipe]);
 
   function formIsValid() {
     const { name } = recipe;
@@ -126,6 +131,7 @@ const mapDispatchToProps = {
   addIngredient,
   addStep,
   saveRecipe,
+  resetRecipe,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditRecipePage);

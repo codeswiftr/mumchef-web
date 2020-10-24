@@ -4,10 +4,16 @@ import RecipeList from "../recipes/RecipeList";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useSnackbar } from "notistack";
 import Button from "@material-ui/core/Button";
-import { selectRecipe } from "../../redux/actions/recipes";
+import { selectRecipe, resetRecipe } from "../../redux/actions/recipes";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { useHistory } from "react-router-dom";
-const RecipesPage = ({ recipes, syncRecipes, selectRecipe, ...props }) => {
+const RecipesPage = ({
+  recipes,
+  syncRecipes,
+  selectRecipe,
+  resetRecipe,
+  ...props
+}) => {
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   function handleDeleteRecipe(recipe) {
@@ -30,6 +36,7 @@ const RecipesPage = ({ recipes, syncRecipes, selectRecipe, ...props }) => {
             color='primary'
             startIcon={<AddCircleIcon />}
             onClick={() => {
+              resetRecipe();
               history.push(`/recipe/new`);
             }}>
             Add recipe
@@ -55,6 +62,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   // syncRecipes,
   selectRecipe,
+  resetRecipe,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipesPage);
