@@ -21,6 +21,9 @@ export const types = {
       PREP_MINUTES: "RECIPE.UPDATE.PREP_MINUTES",
       COOK_MINUTES: "RECIPE.UPDATE.COOK_MINUTES",
       PHOTO_URL: "RECIPE.UPDATE.PHOTO_URL",
+
+      ALLERGENS: "RECIPE.UPDATE.ALLERGENS",
+      CATEGORIES: "RECIPE.UPDATE.CATEGORIES",
     },
     SET_ERROR: "RECIPE.ERROR",
     SET_FILE: "RECIPE.FILE",
@@ -73,6 +76,16 @@ export const setCookMinutes = (cookMinutes) => ({
 export const setError = (error) => ({
   type: types.RECIPE.SET_ERROR,
   error,
+});
+
+export const setAllergens = (allergens) => ({
+  type: types.RECIPE.UPDATE.ALLERGENS,
+  allergens,
+});
+
+export const setCategories = (categories) => ({
+  type: types.RECIPE.UPDATE.CATEGORIES,
+  categories,
 });
 
 export const setPhotoUrl = (photoUrl) => ({

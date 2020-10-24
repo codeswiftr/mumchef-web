@@ -40,13 +40,22 @@ const MenuProps = {
   },
 };
 
-export default function MultipleSelect({ options, label, defaultValue = [] }) {
+export default function MultipleSelect({
+  options,
+  label,
+  values = [],
+  setValues,
+}) {
   const classes = useStyles();
-  const [selectedValues, setSelectedValues] = React.useState(defaultValue);
 
   const handleChange = (event) => {
-    setSelectedValues(event.target.value);
+    const newValues = event.target.value.reduce(
+      (a, b) => ((a[b] = true), a),
+      {}
+    );
+    setValues(newValues);
   };
+  const keys = Object.keys(values || {});
 
   return (
     <div>
@@ -56,7 +65,7 @@ export default function MultipleSelect({ options, label, defaultValue = [] }) {
           labelId='demo-mutiple-chip-label'
           id='demo-mutiple-chip'
           multiple
-          value={selectedValues}
+          value={keys}
           onChange={handleChange}
           input={<Input id='select-multiple-chip' />}
           renderValue={(selected) => (
@@ -69,7 +78,7 @@ export default function MultipleSelect({ options, label, defaultValue = [] }) {
           MenuProps={MenuProps}>
           {Object.entries(options).map(([name, value]) => (
             <MenuItem key={name} value={value}>
-              <Checkbox checked={selectedValues.indexOf(name) > -1} />
+              <Checkbox checked={keys.indexOf(name) > -1} />
               <ListItemText primary={name} />
             </MenuItem>
           ))}

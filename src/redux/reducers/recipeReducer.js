@@ -57,6 +57,16 @@ export default function reducer(state = initialState, action = {}) {
         selected: { ...state.selected, cookMinutes: action.cookMinutes },
       };
 
+    case types.RECIPE.UPDATE.ALLERGENS:
+      return {
+        ...state,
+        selected: { ...state.selected, allergens: action.allergens },
+      };
+    case types.RECIPE.UPDATE.CATEGORIES:
+      return {
+        ...state,
+        selected: { ...state.selected, categories: action.categories },
+      };
     case types.RECIPE.UPDATE.PHOTO_URL:
       return {
         ...state,

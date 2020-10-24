@@ -7,6 +7,8 @@ import {
   setCookMinutes,
   setPrepMinutes,
   setError,
+  setAllergens,
+  setCategories,
   setPhotoUrl,
   setPhotoFile,
   uploadPhoto,
@@ -24,6 +26,8 @@ function EditRecipePage({
   setPrepMinutes,
   setError,
   setYield,
+  setAllergens,
+  setCategories,
   setPhotoUrl,
   setPhotoFile,
   uploadPhoto,
@@ -83,6 +87,8 @@ function EditRecipePage({
       setName={setName}
       setError={setError}
       setYield={setYield}
+      setAllergens={setAllergens}
+      setCategories={setCategories}
       setCookMinutes={setCookMinutes}
       setPrepMinutes={setPrepMinutes}
       setPhotoUrl={setPhotoUrl}
@@ -108,6 +114,8 @@ const mapDispatchToProps = {
   setPrepMinutes,
   setYield,
   setError,
+  setAllergens,
+  setCategories,
   setPhotoUrl,
   setPhotoFile,
   uploadPhoto,

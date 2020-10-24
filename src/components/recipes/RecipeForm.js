@@ -79,6 +79,8 @@ const RecipeForm = ({
   setYield,
   setCookMinutes,
   setPrepMinutes,
+  setAllergens,
+  setCategories,
   setPhotoUrl,
   setPhotoFile,
   uploadPhoto,
@@ -198,17 +200,15 @@ const RecipeForm = ({
           <StyledDivider />
           <MultipleSelect
             options={aggregate.allergens}
-            defaultValue={
-              recipe && recipe.allergens && Object.keys(recipe.allergens)
-            }
+            values={recipe.allergens}
+            setValues={setAllergens}
             label='Allergens'></MultipleSelect>
 
           <StyledDivider />
           <MultipleSelect
             options={aggregate.categories}
-            defaultValue={
-              recipe && recipe.categories && Object.keys(recipe.categories)
-            }
+            values={recipe.categories}
+            setValues={setCategories}
             label='Categories'></MultipleSelect>
           <StyledDivider />
           <StyledButton>Next</StyledButton>
