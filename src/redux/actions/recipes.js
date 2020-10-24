@@ -24,7 +24,15 @@ export const types = {
 
       ALLERGENS: "RECIPE.UPDATE.ALLERGENS",
       CATEGORIES: "RECIPE.UPDATE.CATEGORIES",
+      INGREDIENT: "RECIPE.UPDATE.INGREDIENTS",
+      STEP: "RECIPE.UPDATE.STEP",
     },
+
+    ADD: {
+      INGREDIENT: "RECIPE.ADD.INGREDIENTS",
+      STEP: "RECIPE.ADD.STEP",
+    },
+
     SET_ERROR: "RECIPE.ERROR",
     SET_FILE: "RECIPE.FILE",
     UPLOAD_FILE: "UPLOAD.FILE",
@@ -100,4 +108,29 @@ export const setPhotoFile = (file) => ({
 
 export const uploadPhoto = () => ({
   type: types.RECIPE.UPLOAD_FILE,
+});
+
+export const updateIngredient = (index, field, value) => ({
+  type: types.RECIPE.UPDATE.INGREDIENT,
+  index,
+  item: { [field]: value },
+});
+
+export const updateStep = (index, step) => ({
+  type: types.RECIPE.UPDATE.STEP,
+  index,
+  item: { description: step },
+});
+
+export const addStep = (step) => ({
+  type: types.RECIPE.ADD.STEP,
+  item: { description: step },
+});
+
+export const addIngredient = (ingredient, tag) => ({
+  type: types.RECIPE.ADD.INGREDIENT,
+  item: {
+    fullDescription: ingredient,
+    name: tag,
+  },
 });

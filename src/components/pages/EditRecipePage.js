@@ -13,6 +13,10 @@ import {
   setPhotoFile,
   uploadPhoto,
   setYield,
+  updateIngredient,
+  updateStep,
+  addStep,
+  addIngredient,
 } from "../../redux/actions/recipes";
 import CircularProgress from "@material-ui/core/CircularProgress";
 function EditRecipePage({
@@ -31,6 +35,10 @@ function EditRecipePage({
   setPhotoUrl,
   setPhotoFile,
   uploadPhoto,
+  updateIngredient,
+  updateStep,
+  addIngredient,
+  addStep,
 
   recipe,
   match: { params },
@@ -94,6 +102,10 @@ function EditRecipePage({
       setPhotoUrl={setPhotoUrl}
       setPhotoFile={setPhotoFile}
       uploadPhoto={uploadPhoto}
+      updateIngredient={updateIngredient}
+      updateStep={updateStep}
+      addIngredient={addIngredient}
+      addStep={addStep}
     />
   );
 }
@@ -119,6 +131,10 @@ const mapDispatchToProps = {
   setPhotoUrl,
   setPhotoFile,
   uploadPhoto,
+  updateIngredient,
+  updateStep,
+  addIngredient,
+  addStep,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditRecipePage);

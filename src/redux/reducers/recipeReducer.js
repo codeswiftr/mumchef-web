@@ -7,6 +7,26 @@ const initialState = {
   loading: true,
   recipeId: null,
 };
+function updateObjectInArray(array, action) {
+  return array.map((item, index) => {
+    if (index !== action.index) {
+      // This isn't the item we care about - keep it as-is
+      return item;
+    }
+
+    console.log("# REDUCER: ", { item, action });
+    // Otherwise, this is the one we want - return an updated value
+    return {
+      ...item,
+      ...action.item,
+    };
+  });
+}
+function insertItem(array, action) {
+  let newArray = array.slice();
+  newArray.splice(action.index, 0, action.item);
+  return newArray;
+}
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
@@ -82,6 +102,43 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loading: true,
       };
+    case types.RECIPE.UPDATE.INGREDIENT:
+      return {
+        ...state,
+        selected: {
+          ...state.selected,
+          ingredients: updateObjectInArray(state.selected.ingredients, action),
+        },
+      };
+    case types.RECIPE.ADD.INGREDIENT:
+      return {
+        ...state,
+        selected: {
+          ...state.selected,
+          ingredients: insertItem(state.selected.ingredients, action),
+        },
+      };
+    case types.RECIPE.UPDATE.STEP:
+      return {
+        ...state,
+        selected: {
+          ...state.selected,
+          instructions: updateObjectInArray(
+            state.selected.instructions,
+            action
+          ),
+        },
+      };
+
+    case types.RECIPE.ADD.STEP:
+      return {
+        ...state,
+        selected: {
+          ...state.selected,
+          instructions: insertItem(state.selected.instructions, action),
+        },
+      };
+
     default:
       return state;
   }

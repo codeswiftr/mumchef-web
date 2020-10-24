@@ -50,6 +50,7 @@ export default function MultipleSelect({
 
   const handleChange = (event) => {
     const newValues = event.target.value.reduce(
+      // eslint-disable-next-line
       (a, b) => ((a[b] = true), a),
       {}
     );

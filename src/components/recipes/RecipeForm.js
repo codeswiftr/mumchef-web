@@ -84,6 +84,10 @@ const RecipeForm = ({
   setPhotoUrl,
   setPhotoFile,
   uploadPhoto,
+  addIngredient,
+  addStep,
+  updateIngredient,
+  updateStep,
   errors = {},
   ...props
 }) => {
@@ -98,12 +102,23 @@ const RecipeForm = ({
   const handleChange = (event) => {
     const title = event.target.value;
 
-    setName(title);
     if (title.length === 0) {
       setError("Please enter title");
     } else {
       setError("");
+      setName(title);
     }
+  };
+
+  const handleIngredientChange = (index, field, value) => {
+    console.log("#handleIngredientChange:", { index, field, value });
+    updateIngredient(index, field, value);
+  };
+
+  const handleStepChange = (index, value) => {
+    console.log("#handleStepChange:", { index, value });
+
+    updateStep(index, value);
   };
 
   const handleYieldChange = (event, newValue) => {
@@ -220,7 +235,8 @@ const RecipeForm = ({
           Ingredients
         </Typography>
         {recipe.ingredients &&
-          recipe.ingredients.map((item) => {
+          recipe.ingredients.map((item, index) => {
+            // console.log(`# ${item.fullDescription}:${index} `);
             return (
               <div key={item.fullDescription}>
                 <Divider />
@@ -230,6 +246,14 @@ const RecipeForm = ({
                   variant='filled'
                   margin='dense'
                   value={item.fullDescription}
+                  index={index}
+                  onChange={(e) => {
+                    handleIngredientChange(
+                      index,
+                      "fullDescription",
+                      e.target.value
+                    );
+                  }}
                 />
                 <TagField
                   required
@@ -237,6 +261,10 @@ const RecipeForm = ({
                   variant='filled'
                   margin='dense'
                   value={item.name}
+                  index={index}
+                  onChange={(e) => {
+                    handleIngredientChange(index, "name", e.target.value);
+                  }}
                 />
                 <Divider />
               </div>
@@ -266,6 +294,7 @@ const RecipeForm = ({
                 key={`step-${index}`}
                 label='step'
                 value={item.description}
+                onChange={(e) => handleStepChange(index, e.target.value)}
                 multiline
                 variant='filled'
               />
