@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
@@ -42,6 +42,19 @@ const StyledButton = styled(Button)`
   width: 100%;
 `;
 
+const AddButton = styled(StyledButton)`
+  background-color: #4caf50;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 7px 14px;
+  &:hover {
+    background-color: #5469d4;
+  }
+  & .MuiButton-label {
+    color: #fff;
+  }
+  min-width: 300px;
+`;
+
 const StyledForm = styled(FormControl)`
   min-width: 300px;
   padding: 8px;
@@ -70,7 +83,6 @@ const RecipeForm = ({
   selectedRecipe = {
     allergens: {},
   },
-  onChange,
   onSave,
   saving = false,
   aggregate = initialState.aggregate,
@@ -88,6 +100,7 @@ const RecipeForm = ({
   addStep,
   updateIngredient,
   updateStep,
+  saveRecipe,
   errors = {},
   ...props
 }) => {
@@ -98,6 +111,10 @@ const RecipeForm = ({
     prepMinutes: 15,
   };
   const recipe = selectedRecipe || newRecipe;
+
+  const [newIngredient, setNewIngredient] = useState("");
+  const [newTag, setNewTag] = useState("");
+  const [newStep, setNewStep] = useState("");
 
   const handleChange = (event) => {
     const title = event.target.value;
@@ -119,6 +136,19 @@ const RecipeForm = ({
     console.log("#handleStepChange:", { index, value });
 
     updateStep(index, value);
+  };
+
+  const handleNewIngredient = () => {
+    console.log("@ handleNewIngredient:", { newIngredient, newTag });
+    addIngredient(newIngredient, newTag);
+    setNewIngredient("");
+    setNewTag("");
+  };
+
+  const handleNewStep = () => {
+    console.log("@ handleNewStep:", newStep);
+    addStep(newStep);
+    setNewStep("");
   };
 
   const handleYieldChange = (event, newValue) => {
@@ -226,7 +256,6 @@ const RecipeForm = ({
             setValues={setCategories}
             label='Categories'></MultipleSelect>
           <StyledDivider />
-          <StyledButton>Next</StyledButton>
         </StyledForm>
       </StyledPaper>
 
@@ -273,13 +302,24 @@ const RecipeForm = ({
         <Divider />
         <IngredientField
           required
-          label='Ingredient'
+          label='new ingredient'
+          placeholder='ingredient and quantity'
           variant='filled'
           margin='dense'
+          value={newIngredient}
+          onChange={(e) => setNewIngredient(e.target.value)}
         />
-        <TagField required label='Tag' variant='filled' margin='dense' />
+        <TagField
+          required
+          label='new tag'
+          placeholder='tag'
+          variant='filled'
+          margin='dense'
+          value={newTag}
+          onChange={(e) => setNewTag(e.target.value)}
+        />
         <Divider />
-        <StyledButton>New Ingredient</StyledButton>
+        <AddButton onClick={handleNewIngredient}>Save Ingredient</AddButton>
         <StyledDivider />
       </StyledPaper>
 
@@ -306,11 +346,15 @@ const RecipeForm = ({
           placeholder='instructions'
           variant='filled'
           multiline
+          value={newStep}
+          onChange={(e) => setNewStep(e.target.value)}
         />
-        <StyledButton>New Step</StyledButton>
+        <AddButton onClick={handleNewStep} color='secondary'>
+          Save Step
+        </AddButton>
         <StyledDivider />
 
-        <StyledButton>Submit</StyledButton>
+        <StyledButton onClick={onSave}>Submit</StyledButton>
       </StyledPaper>
     </>
 

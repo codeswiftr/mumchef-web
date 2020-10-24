@@ -28,7 +28,10 @@ const RecipesPage = ({ recipes, syncRecipes, selectRecipe, ...props }) => {
           <Button
             variant='contained'
             color='primary'
-            startIcon={<AddCircleIcon />}>
+            startIcon={<AddCircleIcon />}
+            onClick={() => {
+              history.push(`/recipe/new`);
+            }}>
             Add recipe
           </Button>
 

@@ -17,6 +17,7 @@ import {
   updateStep,
   addStep,
   addIngredient,
+  saveRecipe,
 } from "../../redux/actions/recipes";
 import CircularProgress from "@material-ui/core/CircularProgress";
 function EditRecipePage({
@@ -50,26 +51,15 @@ function EditRecipePage({
   useEffect(() => {
     if (recipes.length === 0) {
       console.warn("# no recipes available ..");
-      findRecipe(params.id);
+      if (params.id !== "new") findRecipe(params.id);
     }
   }, [params.id, recipes.length, findRecipe]);
 
-  function handleChange(event) {
-    // TODO trigger action to alter the state
-    // const { name, value, files } = event.target;
-    // setRecipe((prevRecipe) => ({
-    //   ...prevRecipe,
-    //   [name]: name === "photoUrl" ? URL.createObjectURL(files[0]) : value,
-    // }));
-  }
-
   function formIsValid() {
-    const { name, description } = recipe;
+    const { name } = recipe;
     const errors = {};
 
     if (!name) errors.title = "name is required.";
-    if (!description) errors.author = "Desc is required";
-    if (!recipe.yield) errors.category = "yield is required";
 
     setErrors(errors);
     // Form is valid if the errors object still has no properties
@@ -77,6 +67,7 @@ function EditRecipePage({
   }
 
   function handleSave(event) {
+    console.log("@ handleSaveRecipe: ", recipe);
     event.preventDefault();
     if (!formIsValid()) return;
     setSaving(true);
@@ -89,7 +80,6 @@ function EditRecipePage({
     <RecipeForm
       selectedRecipe={recipe}
       errors={errors}
-      onChange={handleChange}
       onSave={handleSave}
       saving={saving}
       setName={setName}
@@ -135,6 +125,7 @@ const mapDispatchToProps = {
   updateStep,
   addIngredient,
   addStep,
+  saveRecipe,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditRecipePage);

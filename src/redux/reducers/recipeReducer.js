@@ -3,7 +3,15 @@ import { types } from "../actions/recipes";
 const initialState = {
   list: [],
   new: "",
-  selected: null,
+  selected: {
+    cookMinutes: 15,
+    prepMinutes: 10,
+    yield: 4,
+    ingredients: [],
+    instructions: [],
+    photoUrl:
+      "https://firebasestorage.googleapis.com/v0/b/babyledweaning-cb434.appspot.com/o/no-photo-available.png?alt=media&token=4f58833d-84db-4678-9d6b-5a4b572b5c2b",
+  },
   loading: true,
   recipeId: null,
 };
@@ -21,11 +29,6 @@ function updateObjectInArray(array, action) {
       ...action.item,
     };
   });
-}
-function insertItem(array, action) {
-  let newArray = array.slice();
-  newArray.splice(action.index, 0, action.item);
-  return newArray;
 }
 
 export default function reducer(state = initialState, action = {}) {
@@ -95,7 +98,7 @@ export default function reducer(state = initialState, action = {}) {
     case types.RECIPE.SET_FILE:
       return {
         ...state,
-        selected: { ...state.selected, photoFile: action.file },
+        photoFile: action.file,
       };
     case types.RECIPE.UPLOAD_FILE:
       return {
@@ -115,7 +118,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         selected: {
           ...state.selected,
-          ingredients: insertItem(state.selected.ingredients, action),
+          ingredients: [...state.selected.ingredients, action.item],
         },
       };
     case types.RECIPE.UPDATE.STEP:
@@ -135,7 +138,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         selected: {
           ...state.selected,
-          instructions: insertItem(state.selected.instructions, action),
+          instructions: [...state.selected.instructions, action.item],
         },
       };
 

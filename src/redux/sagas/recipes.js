@@ -18,14 +18,16 @@ import {
 
 import rsf from "../rsf";
 
-function* saveNewRecipe() {
+function* saveRecipe() {
   const user = yield select((state) => state.login.user);
-  const newRecipe = yield select((state) => state.recipes.new);
+  const newRecipe = yield select((state) => state.recipes.selected);
+  const recipeId = newRecipe.id || stringToSlug(newRecipe.name);
+  console.log("# SAGA saveRecipe:", user, newRecipe);
 
-  yield call(rsf.database.create, "recipes_web", {
+  yield call(rsf.database.patch, `recipes_web/${recipeId}`, {
+    ...newRecipe,
     creator: user ? user.uid : null,
-    done: false,
-    label: newRecipe,
+    approved: false,
   });
 }
 
@@ -73,7 +75,7 @@ function* syncRecipesSaga() {
   yield take("LOGOUT");
   yield cancel(task);
 }
-function string_to_slug(str) {
+function stringToSlug(str) {
   str = str.replace(/^\s+|\s+$/g, ""); // trim
   str = str.toLowerCase();
 
@@ -102,10 +104,12 @@ function* syncPhotoUrl(filePath) {
 }
 
 function* uploadFileSaga(action) {
-  const recipe = yield select((state) => state.recipes.selected);
-  const file = recipe.photoFile;
+  const recipes = yield select((state) => state.recipes);
+  const file = recipes.photoFile;
   console.log("### SAGA:", file.name, action.filename);
-  const filePath = `recipes/${string_to_slug(recipe.name)}-${file.name}`;
+  const filePath = `recipes/${stringToSlug(recipes.selected.name)}-${
+    file.name
+  }`;
   const task = rsf.storage.uploadFile(filePath, file);
 
   task.on("state_changed", (snapshot) => {
@@ -121,7 +125,7 @@ function* uploadFileSaga(action) {
 export default function* rootSaga() {
   yield all([
     fork(syncRecipesSaga),
-    takeEvery(types.RECIPES.NEW.SAVE, saveNewRecipe),
+    takeEvery(types.RECIPE.SAVE, saveRecipe),
     takeEvery(types.RECIPES.SET_STATUS, setRecipeStatus),
     takeEvery(types.RECIPE.FIND, selectRecipeSaga),
     takeEvery(types.RECIPE.UPLOAD_FILE, uploadFileSaga),
