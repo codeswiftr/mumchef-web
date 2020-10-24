@@ -44,7 +44,6 @@ export default function reducer(state = initialState, action = {}) {
     case types.RECIPE.SELECT:
       return {
         ...state,
-        snack: {},
         selected: action.recipe,
       };
     case types.RECIPE.FIND:
@@ -77,7 +76,6 @@ export default function reducer(state = initialState, action = {}) {
       console.log("# REDUCER -> reset");
       return {
         ...state,
-        snack: {},
         selected: { ...emptyRecipe },
       };
 

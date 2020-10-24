@@ -2,8 +2,8 @@ import React from "react";
 import { render } from "react-dom";
 import "./index.css";
 import App from "./components/App";
-import { BrowserRouter as Router } from "react-router-dom";
-import store from "./redux/store";
+import { ConnectedRouter } from "connected-react-router";
+import store, { history } from "./redux/store";
 import { Provider as ReduxProvider } from "react-redux";
 import "whatwg-fetch";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,9 +14,9 @@ render(
     {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
     <CssBaseline />
     <ReduxProvider store={store}>
-      <Router>
+      <ConnectedRouter history={history}>
         <App />
-      </Router>
+      </ConnectedRouter>
     </ReduxProvider>
   </ThemeProvider>,
   document.getElementById("root")

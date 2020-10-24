@@ -15,6 +15,7 @@ import {
   selectRecipe,
   setPhotoUrl,
 } from "../actions/recipes";
+import { push } from "connected-react-router";
 
 import rsf from "../rsf";
 
@@ -22,13 +23,15 @@ function* saveRecipe() {
   const user = yield select((state) => state.login.user);
   const newRecipe = yield select((state) => state.recipes.selected);
   const recipeId = newRecipe.id || stringToSlug(newRecipe.name);
-  console.log("# SAGA saveRecipe:", user, newRecipe);
-
-  yield call(rsf.database.patch, `recipes_web/${recipeId}`, {
+  const res = yield call(rsf.database.patch, `recipes_web/${recipeId}`, {
     ...newRecipe,
     creator: user ? user.uid : null,
     approved: false,
   });
+
+  console.log("# SAGA saveRecipe:", { user, newRecipe, res });
+
+  yield put(push("/"));
 }
 
 function* setRecipeStatus(action) {
@@ -106,7 +109,6 @@ function* syncPhotoUrl(filePath) {
 function* uploadFileSaga(action) {
   const recipes = yield select((state) => state.recipes);
   const file = recipes.photoFile;
-  console.log("### SAGA:", file.name, action.filename);
   const filePath = `recipes/${stringToSlug(recipes.selected.name)}-${
     file.name
   }`;
