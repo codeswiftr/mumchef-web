@@ -11,9 +11,12 @@ export const types = {
   },
 };
 
-export const login = () => ({
-  type: types.LOGIN.REQUEST,
-});
+export const login = () => {
+  console.log("# login requested");
+  return {
+    type: types.LOGIN.REQUEST,
+  };
+};
 
 export const loginSuccess = (user) => ({
   type: types.LOGIN.SUCCESS,

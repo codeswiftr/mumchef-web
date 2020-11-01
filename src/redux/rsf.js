@@ -1,14 +1,17 @@
-import firebase from "firebase";
-import "@firebase/firestore";
+import firebase from "firebase/app";
+
+import "firebase/database";
 import ReduxSagaFirebase from "redux-saga-firebase";
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAahah3SiynmPSKMNkW455KgZPW5OXq-RA",
-  authDomain: "babyledweaning-cb434.firebaseapp.com",
-  databaseURL: "https://babyledweaning-cb434.firebaseio.com",
-  projectId: "babyledweaning-cb434",
-  storageBucket: "babyledweaning-cb434.appspot.com",
-  messagingSenderId: "1096686494299",
-  appId: "1:1096686494299:web:155f30e582b43015f1957e",
+  apiKey: "AIzaSyCTeW3LH8TrY1G3ml_mTUQf65jE8D1pWE8",
+  authDomain: "mumchef-io.firebaseapp.com",
+  databaseURL: "https://mumchef-io.firebaseio.com",
+  projectId: "mumchef-io",
+  storageBucket: "mumchef-io.appspot.com",
+  messagingSenderId: "114193726314",
+  appId: "1:114193726314:web:f5e4d5d2bad3ad759b0313",
+  measurementId: "G-YPLG2QQXFW",
 };
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
