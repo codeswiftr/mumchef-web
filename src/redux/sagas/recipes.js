@@ -24,11 +24,38 @@ function* saveRecipe() {
   const user = yield select((state) => state.login.user);
   const newRecipe = yield select((state) => state.recipes.selected);
   const recipeId = newRecipe.id || stringToSlug(newRecipe.name);
-  const res = yield call(rsf.database.patch, `recipes_web/${recipeId}`, {
+
+  const res = yield call(rsf.database.patch, `test_recipes/${recipeId}`, {
     ...newRecipe,
     creator: user ? user.uid : null,
     approved: false,
   });
+
+  console.log("# Save categories");
+  const categories = newRecipe.categories;
+  if (categories != null) {
+    var category;
+    for (category in categories) {
+      yield call(rsf.database.patch, `test_recipesByCategories/${category}`, {
+        [recipeId]: true,
+      });
+    }
+  }
+
+  console.log("# Save allergens");
+  const allergens = newRecipe.allergens;
+  if (allergens != null && allergens.length > 0) {
+    var allergen;
+    for (allergen in allergens) {
+      yield call(rsf.database.patch, `test_recipesByAllergies/${allergen}`, {
+        [recipeId]: true,
+      });
+    }
+  } else {
+    yield call(rsf.database.patch, `test_recipesByAllergies/allergensFree`, {
+      [recipeId]: true,
+    });
+  }
 
   console.log("# SAGA saveRecipe:", { user, newRecipe, res });
   yield put(saveRecipeSuccessful());
@@ -92,10 +119,11 @@ function stringToSlug(str) {
 
   str = str
     .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
-    .replace(/\s+/g, "-") // collapse whitespace and replace by -
-    .replace(/-+/g, "-"); // collapse dashes
-
-  return str;
+    .replace(/\s+/g, "_") // collapse whitespace and replace by _
+    .replace(/_+/g, "_"); // collapse dashes
+  const timestampStr = Date.now().toString();
+  const newStr = timestampStr.concat("_").concat(str);
+  return newStr;
 }
 
 function* syncPhotoUrl(filePath) {
