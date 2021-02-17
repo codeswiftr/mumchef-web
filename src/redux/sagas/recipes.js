@@ -23,7 +23,7 @@ import rsf from "../rsf";
 function* saveRecipe() {
   const user = yield select((state) => state.login.user);
   const newRecipe = yield select((state) => state.recipes.selected);
-  const recipeId = newRecipe.id || stringToSlug(newRecipe.name);
+  const recipeId = newRecipe.id || getRecipeID(newRecipe.name);
 
   const res = yield call(rsf.database.patch, `test_recipes/${recipeId}`, {
     ...newRecipe,
@@ -56,7 +56,29 @@ function* saveRecipe() {
       [recipeId]: true,
     });
   }
+  console.log("# Save hashtags"); // -> -> it must contain all the ingredients name and the substrings from the recipe name
+  var hashTags = [];
+  var noDiacritisc = newRecipe.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  hashTags = noDiacritisc.toLowerCase().split(/[ ,]+/);
 
+  const ingredients = newRecipe.ingredients;
+  if (ingredients != null) {
+      for (let i = 0; i < ingredients.length; i++) {
+        const ingredient = ingredients[i];
+        var ingredientName = ingredient.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        hashTags.push(ingredientName.toLowerCase());
+      }
+  }
+
+  console.log("Hash tags: ", {hashTags});
+
+  for (let i = 0; i < hashTags.length; i++) {
+    var tag = hashTags[i];
+    yield call(rsf.database.patch, `test_hashTags_ro/${tag}`, {
+      [recipeId]: true,
+    });
+  }
+  
   console.log("# SAGA saveRecipe:", { user, newRecipe, res });
   yield put(saveRecipeSuccessful());
   yield put(push("/"));
@@ -107,6 +129,10 @@ function* syncRecipesSaga() {
   yield cancel(task);
 }
 function stringToSlug(str) {
+  if (str == null || str.length <= 0) {
+    return "";
+  }
+
   str = str.replace(/^\s+|\s+$/g, ""); // trim
   str = str.toLowerCase();
 
@@ -117,13 +143,18 @@ function stringToSlug(str) {
     str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
   }
 
-  str = str
+  str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
     .replace(/\s+/g, "_") // collapse whitespace and replace by _
     .replace(/_+/g, "_"); // collapse dashes
+  return str;
+}
+
+function getRecipeID(str) {
+  var slug = stringToSlug(str);
   const timestampStr = Date.now().toString();
-  const newStr = timestampStr.concat("_").concat(str);
-  return newStr;
+  const recipeId = timestampStr.concat("_").concat(slug);
+  return recipeId;
 }
 
 function* syncPhotoUrl(filePath) {
@@ -138,7 +169,7 @@ function* syncPhotoUrl(filePath) {
 function* uploadFileSaga(action) {
   const recipes = yield select((state) => state.recipes);
   const file = recipes.photoFile;
-  const filePath = `recipes/${stringToSlug(recipes.selected.name)}-${
+  const filePath = `recipes/${getRecipeID(recipes.selected.name)}-${
     file.name
   }`;
   const task = rsf.storage.uploadFile(filePath, file);
