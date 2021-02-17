@@ -1,6 +1,9 @@
 import firebase from "firebase/app";
 
 import "firebase/database";
+import "firebase/storage";
+import "firebase/auth";
+
 import ReduxSagaFirebase from "redux-saga-firebase";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
